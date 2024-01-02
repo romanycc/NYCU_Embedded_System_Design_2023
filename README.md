@@ -12,4 +12,5 @@ Using video output and input on the embedded system.
 Build a mp3 player on the development board and play the given audio files (music.mp3).
 ## Final Project
 Implement a system that performs object detection task.
+
 ![image](https://github.com/romanycc/NYCU_Embedded_System_Design_2023/blob/main/project/embedded2.jpg)
