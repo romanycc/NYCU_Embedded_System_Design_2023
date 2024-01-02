@@ -1,6 +1,5 @@
 # NYCU_Embedded_System_Design_2023
-![image](https://github.com/romanycc/NYCU_Embedded_System_Design_2023/blob/main/project/embedded.png =80%x)
-<img src="https://github.com/romanycc/NYCU_Embedded_System_Design_2023/blob/main/project/embedded.png" width="300px">
+<img src="https://github.com/romanycc/NYCU_Embedded_System_Design_2023/blob/main/project/embedded.png" width="500px">
 ## lab1
 Hello World in an embedded system.
 ## lab2
@@ -14,4 +13,4 @@ Build a mp3 player on the development board and play the given audio files (musi
 ## Final Project
 Implement a system that performs object detection task.
 
-![image](https://github.com/romanycc/NYCU_Embedded_System_Design_2023/blob/main/project/embedded2.jpg =80%x)
+<img src="https://github.com/romanycc/NYCU_Embedded_System_Design_2023/blob/main/project/embedded2.jpg" width="500px">
