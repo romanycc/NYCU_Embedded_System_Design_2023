@@ -1,5 +1,6 @@
 # NYCU_Embedded_System_Design_2023
 ![image](https://github.com/romanycc/NYCU_Embedded_System_Design_2023/blob/main/project/embedded.png =80%x)
+<img src="https://github.com/romanycc/NYCU_Embedded_System_Design_2023/blob/main/project/embedded.png" width="300px">
 ## lab1
 Hello World in an embedded system.
 ## lab2
