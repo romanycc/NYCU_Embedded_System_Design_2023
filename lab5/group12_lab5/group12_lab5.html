@@ -1,0 +1,3222 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+
+<head>
+    <meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
+<meta name="mobile-web-app-capable" content="yes">
+<meta property="og:image" content="https://hackmd.io/images/media/HackMD-og.jpg">
+
+    <meta property="fb:app_id" content="1436904003272070">
+
+
+<meta name="realtime-register-serverurl" content="https://hackmd.io/realtime-reg">
+
+<meta name="csrf-token" content="RCSBoNv0-E-dwNhhat5lHdDuPpOGh6iFxzQ4">
+<title>Cross Compile Madplay - HackMD</title>
+<link rel="icon" type="image/png" href="https://hackmd.io/favicon.png">
+<link rel="apple-touch-icon" href="https://hackmd.io/apple-touch-icon.png">
+
+<script nonce="c75a2a09-933c-44fd-80aa-bbd70ee1a07b">
+  window.domain = 'hackmd.io'
+  window.urlpath = ''
+  window.debug = false
+  window.version = '1.3.0'
+  window.brand = 'HackMD'
+
+  
+
+  window.GOOGLE_API_KEY = 'AIzaSyCjSrqWHhmWJnoI7JlD88XDSaBgiKbaenA'
+  window.GOOGLE_CLIENT_ID = '911617723593-drikdibvvn63slfd6kbqigo8ql1no55s.apps.googleusercontent.com'
+  window.DROPBOX_APP_KEY = 'rdoizrlnkuha23r'
+  
+  window.PLANTUML_SERVER = 'https://ptuml.hackmd.io'
+
+  window.ASSET_URL = 'https://assets.hackmd.io'
+
+  window.USER_CAN_CREATE_TEAM = true
+  window.USER_CAN_DELETE_ACCOUNT = true
+  window.USER_DELETE_ACCOUNT_VIA_EMAIL = true
+  window.PAYMENT_ENABLED = true
+  window.PAYMENT_PROMOTION_BANNER_ENABLED = false
+  window.GITHUB_SYNC_ENABLED = true
+  window.GITLAB_SYNC_ENABLED = false
+  window.GITLAB_SYNC_BASE_URL = ''
+  window.VCS_SYNC_MODE = 'github'
+  window.VCS_PROVIDER_NAME = 'GitHub'
+  window.FREE_TEAM_NUM = 20
+  window.FREE_TEAM_MEMBER_NUM = 3
+  window.FREE_PUBLIC_TEAM_NUM = 10
+  
+  window.EE_SITE_ENABLE = false
+  window.EE_SITE_NAME = 'false'
+  window.EE_SITE_LINK = 'false'
+  window.EESITE_INFO = false
+  window.ENTERPRISE_DISCOVERY_ENABLE = false
+  window.ENTERPRISE_DISCOVERY_TEAM = true
+  window.ENTERPRISE_DISCOVERY_NOTE = true
+  window.ENTERPRISE_DISCOVERY_VIEW_PERMISSION = 'guest'
+  
+  window.ALLOW_ANONYMOUS = true
+  window.ALLOW_ANONYMOUS_EDIT = false
+  window.PUBLIC_OVERVIEW = false
+  window.INTERNAL_PUBLIC_OVERVIEW = false
+  window.FULL_TEXT_SEARCH_ENABLE = false
+  window.ALGOLIA_SEARCH_ENABLE = true
+  window.MARKETING_EMAIL_ENABLE = true
+  
+  window.ARWEAVE_ENABLE = true
+  
+  
+  window.RECAPTCHA_SCORE_KEY = '6LdtkK4ZAAAAAG1B4iENhmQTce1xNTyHu0GjgnXi'
+  
+  
+  window.API_MANAGEMENT_UI_ENABLE = true
+  window.FEEDBACK_UI_ENABLE = true
+  window.PUBLISH_ENABLE = true
+
+  
+
+  
+
+  
+
+  
+  window.SHOW_OVERVIEW = true
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+  window.canEdit = true
+  
+
+  
+
+  window.TRASH_NOTE_DELETE_AFTER_FREE = 3
+  window.TRASH_NOTE_DELETE_AFTER_PAID = 30
+
+  
+
+  
+    window.IS_OWNER_UPGRADED = false
+  
+
+  
+    window.IMGUR_FALLBACK_CDN = 'https://imgur-backup.hackmd.io'
+  
+
+  
+    window.CLOUD_META_UI = true
+  
+  
+    window.CLOUD_META_API = true
+  
+  
+    window.CLOUD_META_MIGRATION = false
+  
+  
+    window.YAML_METADATA_ENABLED = false
+  
+
+  
+    window.NOTE_CAPACITY_LIMIT = 50
+  
+
+  
+    window.DOCUMENT_MAX_LENGTH = 100000
+  
+
+  
+    window.SOCIAL_NETWORK_FEATURES_ENABLED = true
+  
+
+  
+    window.PUBLISHMENT_MODERATION_ENABLED = false
+  
+</script>
+
+
+
+<!-- Google Tag Manager -->
+<script nonce="c75a2a09-933c-44fd-80aa-bbd70ee1a07b">(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer','GTM-KLW9Z3');</script>
+<!-- End Google Tag Manager -->
+
+
+ <link href="https://assets.hackmd.io/build/font-vendor.85aea95458609ff85035.css" rel="stylesheet"><link href="https://assets.hackmd.io/build/common-vendor.8badda337754ab1de336.css" rel="stylesheet"><link href="https://assets.hackmd.io/build/index-vendor.3773b3818032440d1806.css" rel="stylesheet"><link href="https://assets.hackmd.io/build/index.5a7dde4dea379a099ffb.css" rel="stylesheet">
+<!-- style-loader will insert style before this div in development -->
+<!-- This prevents overwriting reveal.js theme css -->
+<meta id="style-tag-insertion">
+<!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+<!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+<!--[if lt IE 9]>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv.min.js" integrity="sha256-3Jy/GbSLrg0o9y5Z5n1uw0qxZECH7C6OQpVBgNFYa0g=" crossorigin="anonymous"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/respond.js/1.4.2/respond.min.js" integrity="sha256-g6iAfvZp+nDQ2TdTR/VVKJf3bGro4ub5fvWSWVRi2NE=" crossorigin="anonymous"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/es5-shim/4.5.9/es5-shim.min.js" integrity="sha256-8E4Is26QH0bD52WoQpcB+R/tcWQtpzlCojrybUd7Mxo=" crossorigin="anonymous"></script>
+<![endif]-->
+
+
+<style>
+  .grecaptcha-badge {
+      visibility: hidden;
+  }
+</style>
+<script nonce="c75a2a09-933c-44fd-80aa-bbd70ee1a07b" src="https://www.google.com/recaptcha/enterprise.js?render=6LdtkK4ZAAAAAG1B4iENhmQTce1xNTyHu0GjgnXi&hl=zh-TW"></script>
+
+
+
+    <script src="https://tally.so/widgets/embed.js"></script>
+</head>
+
+<body>
+    
+
+
+<nav class="navbar navbar-default navbar-fixed-top unselectable hidden-print">
+    <!-- Brand and toggle get grouped for better mobile display -->
+    <div class="navbar-header hmd-navbar-header">
+        
+        <a class="navbar-brand pull-left" style="float: left;" href="https://hackmd.io/"><i
+                class="fa fa-file-text"></i><span class="hidden-xs"> HackMD</span></a>
+        
+
+        <div id="nav-mobile-note-title" class="nav-mobile"></div>
+
+        
+        
+
+        <ul class="nav-mobile pull-right mobile-extra-menu" style="margin: 0 8px 0 0;">
+            <li>
+                
+                    <a class="rounded btn-link side-menu-button ui-guest-signin-tooltip">
+                
+                    <i class="fa fa-bars"></i>
+                </a>
+            </li>
+        </ul>
+        <ul class="nav-mobile pull-right mobile-user-profile">
+            <li id="short-online-user-list" class="ui-host-list">
+                <button class="ui-short-status btn bg-transparent text-red-light hover:text-red-light focus:text-red-light ml-1.5" data-toggle="dropdown"><i class="fa fa-plug"></i></button>
+                <ul class="dropdown-menu list" role="menu" aria-labelledby="menu">
+                </ul>
+            </li>
+            <li>
+                <a class="ui-mode btn text-blue-default border-blue-default ml-1.5">
+                    <i class="mt-1 fa fa-pencil"></i>
+                </a>
+            </li>
+            <li>
+                <a class="ui-share btn ml-1.5 signin" sidenav-target="sidenav-permission" tabindex="-1" href="#">
+                    <i class="mt-1 fa fa-share-alt fa-fw"></i>
+                </a>
+            </li>
+        </ul>
+    </div>
+    <div class="hmd-navbar navbar-collapse">
+        <nav class="nav mode-switch navbar-nav navbar-form navbar-left">
+            <div class="btn-group" data-toggle="buttons">
+                <label class="btn btn-default ui-edit" style="padding: 6px 9px;" title="編輯 (Ctrl+Alt+E)" aria-label="編輯">
+                    <input type="radio" name="mode" autocomplete="off"><i class="fa fa-pencil fa-fw"></i>
+                </label>
+                <label class="btn btn-default ui-both" style="padding: 6px 9px;" title="雙欄 (Ctrl+Alt+B)" aria-label="雙欄">
+                    <input type="radio" name="mode" autocomplete="off"><i class="fa fa-columns fa-fw"></i>
+                </label>
+                <label class="btn btn-default ui-view" style="padding: 6px 9px;" title="檢視 (Ctrl+Alt+V)" aria-label="檢視">
+                    <input type="radio" name="mode" autocomplete="off"><i class="fa fa-eye fa-fw"></i>
+                </label>
+            </div>
+        </nav>
+        <ul class="nav action-group navbar-nav navbar-left">
+            
+            
+            <li title="建立" data-toggle="tooltip" data-placement="bottom" data-container=".navbar-default" data-offset="0,5" class="mr-3.5">
+                <a class="rounded ui-new ui-new-note-menu navbar-button-icon" id="create-note-menu" href="https://hackmd.io/new" target="_blank" aria-label="建立筆記"  aria-haspopup="true" aria-expanded="false" tabindex="0" data-toggle="dropdown">
+                    <i class="fa fa-plus fa-18"></i>
+                </a>
+                <ul class="dropdown-menu list" role="menu" aria-labelledby="create-note-menu">
+                    <li role="presentation">
+                        <a role="menuitem" class="ui-new" href="https://hackmd.io/new" target="_blank" tabindex="-1">
+                            <i class="fa fa-plus fa-fw"></i> 建立筆記
+                        </a>
+                    </li>
+                    <li role="presentation">
+                        <a role="menuitem" class="ui-new-with-template" href="#" data-toggle="modal" data-target="#templateModal" tabindex="-1">
+                            <i class="fa fa-file-image-o fa-fw"></i> 從範本新增筆記
+                        </a>
+                    </li>
+                </ul>
+            </li>
+            
+            
+            <li title="協助" data-toggle="tooltip" data-placement="bottom" data-container=".navbar-default" data-offset="0,5" class="mr-3.5">
+                <a class="rounded ui-help navbar-button-icon" href="#" data-toggle="modal" data-target=".help-modal" aria-label="協助">
+                    <i class="fa fa-question fa-20"></i>
+                </a>
+            </li>
+
+            
+                <li id="spotlight-app" title="尋找筆記 (Cmd/Ctrl + Shift + P)" data-toggle="tooltip" data-placement="bottom" data-container=".navbar-default" data-offset="0,5">
+                    <a href="#" class="ui-spotlight">
+                        <i class="fa fa-search fa-18"></i>
+                    </a>
+                </li>
+            
+        </ul>
+
+        
+        
+
+        
+            
+            <div id="nav-note-setting"
+                class="nav navbar-nav h-full w-full selectable pointer-events-none flex justify-around items-center"
+                data-workspace="我的工作空間"></div>
+        
+
+        <ul class="nav extra-menu navbar-nav navbar-right">
+            <li class="ui-share-button mr-1.5" data-toggle="tooltip" data-placement="bottom" data-container=".navbar-default" data-offset="0,5">
+                <button class="ui-sharing btn signin" data-toggle="dropdown" tabindex="0">
+                    <i class="fa fa-share-alt fa-18"></i>
+                    分享
+                </button>
+                <ul class="dropdown-menu list ui-share-menu permission-dropdown" role="menu" aria-labelledby="menu" style="width: 308px; padding: 15px 0px;">
+                    
+                        <li class="dropdown-header fill-username-banner" style="display: none;">
+    填寫使用者名稱，讓網址更乾淨簡短！ <span style="white-space: nowrap;"><a href="https://hackmd.io/settings" target="_blank"><i class="fa fa-gear"></i> 設定</a></span>
+</li>
+
+                    
+                    <li class="dropdown-header" style="margin-bottom: 4px;">
+                        共享
+                        <i class="fa fa-question-circle fa-12 tooltip-align-left ui-first-menu-tooltip" style="color: #CDCDCD"
+                        title="用以下網址分享此篇筆記，請先確保您分享的對象有存取權限"
+                            data-toggle="tooltip" data-placement="bottom" data-offset="0,5"></i>
+                        <span class="ui-share-msg" style="display: none;">
+                            已複製連結
+                        </span>
+                    </li>
+                    <li class="dropdown-header ui-share-domain" style="margin-bottom: 2px; word-break: break-all; overflow: hidden; text-overflow: ellipsis;">
+                    </li>
+                    <li class="input-group" style="padding: 0px 20px;">
+                        <input type="text" class="form-control ui-share-field" maxlength="200" placeholder="https://hackmd.io" style="height: 28px; font-size: 13px;">
+                        <div class="ui-share-edit-mode" style="color:#888; position: absolute; z-index: 10; font-size: 13px; top: 5px; right: 100px; display: none;">/edit</div>
+                        <span class="input-group-btn">
+                            <button class="btn ui-share-copy" type="button">複製</button>
+                        </span>
+                        <span class="input-group-btn" style="display: none">
+                            <button class="btn ui-share-save" type="button">儲存</button>
+                        </span>
+                    </li>
+
+                    <li class="hmd-flex hmd-justify-end hmd-items-center" style="padding: 0 20px; margin-top: 10px;">
+                        <div class="hmd-flex hmd-flex-one hmd-items-center ui-publish-type">
+                            <div class="hmd-flex-one">
+                                <div class="dropdown menuitem-dropdown">
+                                    <div class="menuitem-dropdown-trigger" data-toggle="dropdown" tabindex="0">
+                                        <span class="ui-publish-type-label">
+                                            <i class="fa fa-eye fa-fw" aria-hidden="true"></i> 瀏覽模式
+                                        </span>
+                                        <i class="fa fa-angle-down menuitem-angle" aria-hidden="true" style="margin-left: 10px;"></i>
+                                    </div>
+
+                                    <ul class="dropdown-menu" role="menu">
+                                        <li role="presentation"><a role="menuitem" class="menuitem-item ui-mode-edit" href="#" tabindex="-1"><i class="fa fa-pencil-square-o fa-fw" aria-hidden="true"></i> 編輯模式</a></li>
+                                        <li role="presentation"><a role="menuitem" class="menuitem-item ui-mode-view" href="#" tabindex="-1"><i class="fa fa-eye fa-fw" aria-hidden="true"></i> 瀏覽模式</a></li>
+                                        <li role="presentation"><a role="menuitem" class="menuitem-item ui-mode-book" href="#" tabindex="-1"><i class="fa fa-book fa-fw" aria-hidden="true"></i> 書本模式</a></li>
+                                        <li role="presentation"><a role="menuitem" class="menuitem-item ui-mode-slide" href="#" tabindex="-1"><i class="fa fa-television fa-fw" aria-hidden="true"></i> 簡報模式</a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <i class="fa fa-question-circle fa-12 tooltip-align-left ui-first-menu-tooltip"  style="color: #CDCDCD; margin-left: 5px; margin-right: 15px; font-size: 12px;"
+                            title="當您分享筆記時，筆記會顯示您設定的模式" data-toggle="tooltip" data-placement="bottom" data-offset="0,5"></i>
+                        </div>
+
+                        <div class="permission-item-badge permission-item-readonly ui-publish-type-badge" style="display: none;">
+                            <span name="edit"><i class="fa fa-pencil-square-o fa-fw" aria-hidden="true"></i> 編輯模式</span>
+                            <span name="view"><i class="fa fa-eye fa-fw" aria-hidden="true"></i> 瀏覽模式</span>
+                            <span name="book"><i class="fa fa-book fa-fw" aria-hidden="true"></i> 書本模式</span>
+                            <span name="slide"><i class="fa fa-television fa-fw" aria-hidden="true"></i> 簡報模式</span>
+                        </div>
+                        <div>
+                            <button class="btn btn-default ui-share-preview" type="button">預覽</button>
+                        </div>
+                    </li>
+
+                    
+                    <li role="presentation">
+                        <div class="ui-publish-slide-options" style="display: none;">
+                            <span>自訂簡報選項</span>
+                            <i class="fa fa-angle-right fa-fw"></i>
+                        </div>
+                        <style>
+                            .ui-publish-slide-options {
+                                margin: 9px 20px 11px 20px;
+                                width: calc(100% - 40px) !important;
+                                cursor: pointer;
+                        }
+                        </style>
+                    </li>
+                    
+
+                    <li role="presentation" aria-hidden="true" class="divider"></li>
+                    <li class="dropdown-header" style="margin-bottom: 7px;">
+                        權限
+                        <i class="fa fa-question-circle fa-12 tooltip-align-left ui-first-menu-tooltip" style="color: #CDCDCD"
+                        title="筆記擁有者可設定誰能閱讀、編輯此筆記"
+                            data-toggle="tooltip" data-placement="bottom" data-offset="0,5"></i>
+                    </li>
+                    <li role="presentation" style="margin-bottom: 10px;">
+                        <div class="hmd-flex" style="padding: 0 20px; height: 26px;">
+                            <span class="hmd-flex-one">
+                                <div style="display: table; width: 100%; height: 100%;">
+                                    <div style="display: table-cell; vertical-align: middle;">
+                                        可閱讀
+                                    </div>
+                                </div>
+                            </span>
+                            <div class="hmd-flex-two ui-note-read">
+                                <div>
+                                    <div class="dropdown menuitem-dropdown">
+                                        <button class="menuitem-dropdown-trigger" data-toggle="dropdown" tabindex="0">
+                                            <span class="ui-note-read-label">
+                                                只有我
+                                            </span>
+                                            <i class="fa fa-angle-down menuitem-angle" aria-hidden="true" style="margin-left: 10px;"></i>
+                                        </button>
+
+                                        <ul class="dropdown-menu" role="menu">
+                                            <li role="presentation"><a role="menuitem" class="menuitem-item ui-note-read-owners" href="#" tabindex="-1">只有我</a></li>
+                                            <li role="presentation"><a role="menuitem" class="menuitem-item ui-note-read-signed_in_users" href="#" tabindex="-1">已登入者</a></li>
+                                            <li role="presentation"><a role="menuitem" class="menuitem-item ui-note-read-everyone" href="#" tabindex="-1">所有人</a></li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="permission-item-badge permission-item-readonly" style="display: none;" name="read">
+                                <span name="owners">只有我</span>
+                                <span name="signed_in_users">已登入者</span>
+                                <span name="everyone">所有人</span>
+                            </div>
+                        </div>
+                    </li>
+                    <li role="presentation" style="margin-bottom: 10px;">
+                        <div style="display: flex; padding: 0 20px; height: 26px;">
+                            <span style="flex: 1;">
+                                <div style="display: table; width: 100%; height: 100%;">
+                                    <div style="display: table-cell; vertical-align: middle;">
+                                        可編輯
+                                    </div>
+                                </div>
+                            </span>
+                            <div style="flex: 2" class="ui-note-write">
+                                <div>
+                                    <div class="dropdown menuitem-dropdown">
+                                        <button class="menuitem-dropdown-trigger" data-toggle="dropdown" tabindex="0"
+                                        >
+                                            <span class="ui-note-write-label">
+                                                只有我
+                                            </span>
+                                            <i class="fa fa-angle-down menuitem-angle" aria-hidden="true" style="margin-left: 10px;"></i>
+                                        </button>
+                                        <ul class="dropdown-menu" role="menu">
+                                            <li role="presentation"><a role="menuitem" class="menuitem-item ui-note-write-owners" href="#" tabindex="-1">只有我</a></li>
+                                            <li role="presentation"><a role="menuitem" class="menuitem-item ui-note-write-signed_in_users" href="#" tabindex="-1">已登入者</a></li>
+                                            <li role="presentation"><a role="menuitem" class="menuitem-item ui-note-write-everyone" href="#" tabindex="-1">所有人</a></li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="permission-item-badge permission-item-readonly" style="display: none;" name="write">
+                                <span name="owners">只有我</span>
+                                <span name="signed_in_users">已登入者</span>
+                                <span name="everyone">所有人</span>
+                            </div>
+                        </div>
+                    </li>
+
+                    <div class="px-5 my-2 font-semibold permission-notice">
+                        <small class="text-gray-600"></small>
+                    </div>
+
+                    
+                        
+                        
+                        <li role="presentation">
+                            <a href="#" class="ui-more-settings overwrite">
+                                <div class="note-permission-button" style="margin: 0 20px 11px 20px; width: calc(100% - 40px);">
+                                    <span>
+                                        
+                                        
+                                        
+                                            留言與邀請共編
+                                        
+                                    </span>
+                                    <i class="fa fa-angle-right fa-fw"></i>
+                                </div>
+                            </a>
+                            <style>
+                                a.ui-more-settings.overwrite {
+                                    margin: 0;
+                                    padding: 0;
+                                }
+                                a.ui-more-settings.overwrite:hover {
+                                    background-color: transparent;
+                                }
+                            </style>
+                        </li>
+                        
+                    
+
+                    <div class="public-publish-container" style="display: none;">
+                        <li role="presentation" aria-hidden="true" class="divider"></li>
+
+                        <div class="dropdown-header">
+    公開發表
+</div>
+
+<div class="hmd-flex hmd-justify-center public-published-toggle" data-published="false">
+    <button type="button" class="btn btn-default publish hmd-flex-auto">
+        <i class="fa fa-globe" aria-hidden="true"></i>
+        已公開發表
+    </button>
+
+    <button type="button" class="btn btn-default unpublish-action hmd-flex-auto">
+        取消公開發表
+    </button>
+
+    <button type="button" class="btn btn-primary unpublish hmd-flex-auto">
+        我要公開發表
+    </button>
+</div>
+<div class="mb-[10px] px-5 community-guideline-container leading-[14px]">
+    <label class="font-normal text-3 text-gray-600 mb-[3px] flex">
+        <input type="checkbox" style="margin-top: 0; margin-right: 6px;">
+        <span>我同意 HackMD 的<a href="https://hackmd.io/@hackmd/community-guidelines" target="_blank">社群守則</a>。</span>
+    </label>
+    <span class="error-message text-red-light text-3 hidden">請勾選同意社群守則</span>
+</div>
+<div style="margin-bottom: 10px;">
+    <div class="publish-note-description-for-public-team" style="display: none; color: #888888; padding: 0 20px; white-space: initial; font-size: 13px;">網路上的所有人皆可以瀏覽及搜尋到此開放團隊的所有筆記。</div>
+    <div class="publish-note-description" style="color: #888888; padding: 0 20px; white-space: initial; font-size: 13px;">當選擇公開發表，網路上的所有人皆可以尋找及瀏覽到這篇筆記。</div>
+    <div class="how-to-publish-note-description" style="color: #888888; padding: 0 20px; white-space: initial; font-size: 13px;">在<a target="_blank" href="">公開頁面</a>檢視所有已公開發表的筆記。</div>
+</div>
+
+                    </div>
+                </ul>
+                <ul class="dropdown-menu list ui-more-settings-menu permission-dropdown" role="menu" aria-labelledby="menu" style="width: 308px; padding-top: 0px; padding-bottom: 0px; display: none">
+                    <li role="presentation">
+                        <button class="ui-more-settings-menu-back hmd-text-left" style="width: 100%; padding: 15px 20px 15px 20px; font-size: 15px; background-color: white; cursor: pointer; border: none; border-bottom: #888888 1px solid;">
+                            <i class="fa fa-angle-left fa-fw" style="width:auto; margin-right: 15px;"></i>
+                            <span><span>更多設定 (留言權限、</span><span class="ui-more-invitee">邀請</span>)</span>
+                        </button>
+                    </li>
+                    
+                    <li class="dropdown-header" style="margin-bottom: 7px; margin-top: 15px;">
+                        留言
+                        <i class="fa fa-question-circle fa-12 tooltip-align-left ui-second-menu-tooltip" style="color: #CDCDCD"
+                        title="筆記擁有者可開啟留言功能，設定誰能撰寫留言"
+                        data-toggle="tooltip" data-placement="bottom" data-offset="0,5"></i>
+                        <span class="ui-comment-permission-toggle pull-right">
+                            <span style="margin-right: 3px;">
+                                啟用
+                            </span>
+                            <span>
+                                <label class="switch" style="vertical-align: middle;" aria-label="啟用">
+                                    <input type="checkbox">
+                                    <span class="slider round"></span>
+                                </label>
+                            </span>
+                        </span>
+                        <div class="permission-item-badge permission-item-readonly pull-right" style="display: none;" name="comment">
+                            <span name="disabled">停用</span>
+                            <span name="forbidden">不開放留言</span>
+                            <span name="owners">擁有者</span>
+                            <span name="signed_in_users">已登入者</span>
+                            <span name="everyone">所有人</span>
+                        </div>
+                    </li>
+                    <li class="ui-comment-permission-comment" role="presentation" style="margin-bottom: 20px;">
+                        <div style="display: flex; padding: 0 20px; height: 26px;">
+                            <span style="flex: 1;">
+                                <div style="display: table; width: 100%; height: 100%;">
+                                    <div style="display: table-cell; vertical-align: middle;">
+                                        留言權限
+                                    </div>
+                                </div>
+                            </span>
+                            <div style="flex: 2">
+                                <div>
+                                    <div class="dropdown menuitem-dropdown">
+                                        <button class="menuitem-dropdown-trigger" data-toggle="dropdown" tabindex="0">
+                                            <span class="ui-comment-write-label">擁有者</span><i class="fa fa-angle-down menuitem-angle" aria-hidden="true" style="margin-left: 10px;"></i>
+                                        </button>
+                                        <ul class="dropdown-menu" role="menu">
+                                            <li role="presentation"><a role="menuitem" class="menuitem-item ui-comment-write-forbidden" href="#" tabindex="-1">不開放留言</a></li>
+                                            <li role="presentation"><a role="menuitem" class="menuitem-item ui-comment-write-owners" href="#" tabindex="-1">擁有者</a></li>
+                                            <li role="presentation"><a role="menuitem" class="menuitem-item ui-comment-write-signed_in_users" href="#" tabindex="-1">已登入者</a></li>
+                                            <li role="presentation"><a role="menuitem" class="menuitem-item ui-comment-write-everyone" href="#" tabindex="-1">所有人</a></li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                    <li role="presentation" aria-hidden="true" class="divider ui-invitee-divider"></li>
+                    
+                    
+                    <li class="dropdown-header ui-invitee-label" style="padding-bottom: 9px; margin-top: 15px;">
+                        受邀者
+                        <i class="fa fa-question-circle fa-12 tooltip-align-left ui-second-menu-tooltip" style="color: #CDCDCD"
+                        title="筆記管理者可邀請特定使用者，擁有筆記的閱讀、編輯或邀請權限"
+                        data-toggle="tooltip" data-placement="bottom" data-offset="0,5"></i>
+                    </li>
+                    <li class="ui-invitee-form" role="presentation" style="padding: 0px 20px 15px 20px;">
+                        <div class="input-group" style="display: flex;">
+                            <input type="text" class="form-control search-user search-user-large ui-invitee-input" placeholder="透過 Email 搜尋使用者...">
+                            <div class="input-group-append">
+                                <button class="btn btn-default ui-invitee-invite" invite-target=".search-user-large">邀請</button>
+                            </div>
+                        </div>
+                    </li>
+                    <li role="presentation" class="ui-no-invitee-label" style="padding: 0px 20px 10px 20px; font-size: 12px; color: #888888; display: none">
+                        此篇筆記並沒有任何受邀者
+                    </li>
+                    <li role="presentation" style="padding: 0 20px 15px 20px;" class="ui-invitee ui-invitee-list" data-email-invitation="true">
+                        <div style="padding-bottom: 10px; font-size: 12px; color: #888888; display: none" class="ui-invitee-limit-label"></div>
+                    </li>
+                    
+                </ul>
+
+                <ul class="dropdown-menu list ui-customize-slide-menu permission-dropdown" role="menu" aria-labelledby="menu" style="width: 308px; padding-top: 0px; padding-bottom: 0px; display: none">
+                    <li role="presentation">
+                        <button
+                            class="ui-customize-slide-menu-back hmd-text-left"
+                            style="width: 100%; padding: 15px 20px 15px 20px; font-size: 15px; background-color: white; cursor: pointer; border: none; border-bottom: #888888 1px solid;">
+                            <i class="fa fa-angle-left fa-fw" style="width:auto; margin-right: 15px;"></i>
+                            自訂簡報選項
+                        </button>
+                    </li>
+                    <li role="presentation" class="ui-customize-slide-menu-options"></li>
+                </ul>
+            </li>
+
+            <!-- Extra Menu -->
+            <li title="選單" data-toggle="tooltip" data-placement="bottom" data-container=".navbar-default" data-offset="0,5" aria-label="選單" class="mr-3.75">
+                <a class="rounded ui-menu navbar-button-icon" data-toggle="dropdown" tabindex="0">
+                    <i class="fa fa-ellipsis-h fa-18"></i>
+                </a>
+                <span class="ui-menu-popover-target" style="left: 50%; position: absolute;"></span>
+                <ul class="dropdown-menu list" role="menu" aria-label="選單">
+                    <li class="dropdown-header">
+                        選項
+                    </li>
+                    <li role="presentation">
+                        <a role="menuitem" class="ui-extra-revision" data-toggle="modal" data-target="#namedRevisionModal" href="#" tabindex="-1">
+                            <i class="fa fa-history fa-fw"></i>
+                            版本與 GitHub 同步
+                        </a>
+                    </li>
+                    <li role="presentation">
+                        <a role="menuitem" class="ui-transfer-note" href="#" tabindex="-1">
+                            <i class="fa fa-exchange fa-fw"></i>
+                            轉移筆記擁有權
+                        </a>
+                    </li>
+                    <li role="presentation">
+                        <a role="menuitem" class="ui-delete-note" href="#" tabindex="-1">
+                            <i class="fa fa-trash fa-fw"></i>
+                            刪除此筆記
+                        </a>
+                    </li>
+                    <li role="presentation">
+                        <a role="menuitem" class="ui-note-settings" href="#" tabindex="-1">
+                            <i class="fa fa-fw fa-info-circle"></i>
+                            筆記設定
+                        </a>
+                    </li>
+                    
+                    <li role="presentation" aria-hidden="true" class="divider"></li>
+                    <li class="dropdown-header ui-menu-template-header">
+                        筆記範本
+                    </li>
+                    
+                    <li role="presentation">
+                        <a role="menuitem" class="ui-template-save" href="#" tabindex="-1">
+                            <i class="fa fa-floppy-o fa-fw"></i>
+                            存為範本
+                        </a>
+                    </li>
+                    
+                    <li role="presentation">
+                        <a role="menuitem" class="ui-template-insert" data-toggle="modal" data-target="#templateModal" href="#" tabindex="-1">
+                            <i class="fa fa-plus fa-fw"></i>
+                            插入範本
+                        </a>
+                    </li>
+                    
+                    <li role="presentation" aria-hidden="true" class="divider"></li>
+                    <li class="dropdown-header">
+                        匯出
+                    </li>
+                    <li role="presentation">
+                        <a role="menuitem" class="ui-save-dropbox" href="#" target="_self" tabindex="-1">
+                            <i class="fa fa-dropbox fa-fw"></i>
+                            Dropbox
+                        </a>
+                    </li>
+                    <li role="presentation">
+                        <a role="menuitem" class="ui-save-google-drive" href="#" target="_self" tabindex="-1">
+                            <img src="https://hackmd.io/images/logo_google_drive.png" alt="Google Drive" class="fa fa-fw" />
+                            Export to Google Drive
+                        </a>
+                    </li>
+                    
+                    <li role="presentation">
+                        <a role="menuitem" class="ui-save-gist" href="#" target="_blank" tabindex="-1">
+                            <i class="fa fa-github fa-fw"></i>
+                            Gist</a>
+                        </li>
+                    </li>
+                    
+                    
+                    
+                    <li role="presentation" class="arweave-export-item">
+                    </li>
+                    
+                    <li role="presentation" aria-hidden="true" class="divider"></li>
+                    <li class="dropdown-header">
+                        匯入
+                    </li>
+                    <li role="presentation">
+                        <a role="menuitem" class="ui-import-dropbox" target="_self" href="#" tabindex="-1">
+                            <i class="fa fa-dropbox fa-fw"></i>
+                            Dropbox
+                        </a>
+                    </li>
+                    <li role="presentation">
+                        <a role="menuitem" class="ui-import-google-drive" target="_self" href="#" tabindex="-1">
+                            <img src="https://hackmd.io/images/logo_google_drive.png" alt="Google Drive" class="fa fa-fw" />
+                            Import from Google Drive
+                        </a>
+                    </li>
+                    <li role="presentation">
+                        <a role="menuitem" class="ui-import-gist" data-toggle="modal" data-target="#gistImportModal" href="#" tabindex="-1">
+                            <i class="fa fa-github fa-fw"></i>
+                            Gist
+                        </a>
+                    </li>
+                    
+                    <li role="presentation">
+                        <a role="menuitem" class="ui-import-clipboard" data-toggle="modal" data-target="#clipboardModal" href="#" tabindex="-1">
+                            <i class="fa fa-clipboard fa-fw"></i>
+                            剪貼簿
+                        </a>
+                    </li>
+                    
+                    <li role="presentation" class="arweave-import-item">
+                    </li>
+                    
+                    <li role="presentation" aria-hidden="true" class="divider"></li>
+                    <li class="dropdown-header">
+                        下載
+                    </li>
+                    <li role="presentation">
+                        <a role="menuitem" class="ui-download-markdown" href="#" target="_blank" tabindex="-1">
+                            <i class="fa fa-file-text fa-fw"></i>
+                            Markdown
+                        </a>
+                    </li>
+                    <li role="presentation">
+                        <a role="menuitem" class="ui-download-html" href="#" target="_blank" tabindex="-1">
+                            <i class="fa fa-file-code-o fa-fw"></i>
+                            HTML
+                        </a>
+                    </li>
+                    <li role="presentation"><a role="menuitem" class="ui-download-raw-html" href="#" target="_blank" tabindex="-1">
+                            <i class="fa fa-file-code-o fa-fw"></i>
+                            純 HTML
+                        </a>
+                    </li>
+                    
+                </ul>
+            </li>
+            <!-- End Extra Menu -->
+        </ul>
+        <ul class="nav user-profile navbar-nav navbar-right">
+            <li id="online-user-list" class="ui-host-list mr-1.5" data-toggle="tooltip" data-placement="bottom" data-container=".navbar-default" data-offset="0,5">
+                <button class="bg-transparent ui-status btn text-red-light" data-toggle="dropdown">
+                    <i class="fa fa-plug"></i> 已離線
+                </button>
+                <ul class="dropdown-menu list" role="menu" aria-labelledby="menu" style="width: 250px;">
+                </ul>
+            </li>
+            
+                <li title="楊佳誠" data-toggle="tooltip" data-placement="bottom" data-container=".navbar-default" data-offset="0,5" class="mr-1.5">
+                    <a class="rounded ui-profile-label" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" tabindex="0">
+                        <img class="ui-avatar" src="https://lh3.googleusercontent.com/a/AGNmyxajqHwvV2RbYheCuJx5lF-prIBnYHvcgAQ7c4fH=s96-c" alt="Profile photo">
+                    </a>
+                    <ul id="profile-dropdown" class="dropdown-menu" aria-labelledby="profileLabel">
+                        <li><a href="https://hackmd.io/settings" target="_blank" tabindex="-1"><i class="fa fa-gear fa-fw" aria-hidden="true"></i> 設定</a></li>
+                        
+                            <li><a href="https://hackmd.io/profile" target="_blank" tabindex="-1"><i class="fa fa-user-circle-o fa-fw" aria-hidden="true"></i> 個人公開頁</a></li>
+                        
+                        <li><a href="https://hackmd.io/?nav=myTeams" target="_blank" tabindex="-1"><img src="https://hackmd.io/images/team-icon_dark.svg" style="width:14px; height: 14px; margin: 0 2px;"> 我參與的團隊</a></li>
+                        
+                            <li><a href="https://hackmd.io/?nav=billing" target="_blank" tabindex="-1"><i class="fa fa-credit-card fa-fw" aria-hidden="true"></i> 付費</a></li>
+                        
+                        <li role="presentation" aria-hidden="true" class="divider"></li>
+                        <li>
+                            <a href="https://hackmd.io/logout" class="ui-signout" tabindex="-1"><i class="fa fa-sign-out fa-fw" aria-hidden="true"></i> 登出</a>
+                        </li>
+                    </ul>
+                </li>
+            
+        </ul>
+    </div>
+
+    <div class="sidenav main-sidenav" style="display: none;">
+        
+        <a class="sidenav-item sidenav-trigger ui-profile-menu dark-border" sidenav-target="sidenav-profile">
+            <img class="ui-avatar rounded-full mr-1.5" width="22" height="22" src="https://lh3.googleusercontent.com/a/AGNmyxajqHwvV2RbYheCuJx5lF-prIBnYHvcgAQ7c4fH=s96-c" alt="Profile photo">
+            <span>
+                楊佳誠
+            </span>
+            <i class="fa fa-angle-right fa-fw"></i>
+        </a>
+        
+        <a class="sidenav-item sidenav-trigger ui-menu" sidenav-target="sidenav-menu" tabindex="-1" href="#"><i class="fa fa-ellipsis-h fa-fw"></i>
+            <span>
+                選單
+            </span>
+            <i class="fa fa-angle-right fa-fw"></i>
+        </a>
+
+        
+            <a class="sidenav-item sidenav-trigger ui-note-settings-mobile" sidenav-target="sidenav-note-setting" tabindex="-1" href="#">
+                <i class="fa fa-info-circle fa-fw"></i>
+                <span>
+                    筆記設定
+                </span>
+                <i class="fa fa-angle-right fa-fw"></i>
+            </a>
+        
+
+        <a class="sidenav-item sidenav-trigger ui-share" sidenav-target="sidenav-permission" tabindex="-1" href="#"><i class="fa fa-share-alt fa-fw"></i>
+            <span>
+                共享
+            </span>
+            <i class="fa fa-angle-right fa-fw"></i>
+        </a>
+        
+            
+            <a class="sidenav-item sidenav-trigger ui-create" sidenav-target="sidenav-create" tabindex="-1" href="#"><i class="fa fa-plus fa-fw"></i>
+                <span>
+                    建立
+                </span>
+                <i class="fa fa-angle-right fa-fw"></i>
+            </a>
+            
+        
+
+
+        
+            <a class="sidenav-item ui-spotlight" href="#" title="尋找筆記 (Cmd/Ctrl + Shift + P)"><i class="fa fa-search fa-fw"></i>
+                <span>
+                        尋找筆記
+                </span>
+            </a>
+        
+
+        <a class="sidenav-item ui-help dark-border" href="#" data-toggle="modal" data-target=".help-modal"><i class="fa fa-question fa-fw"></i>
+            <span>
+                    協助
+            </span>
+        </a>
+    </div>
+
+
+    
+    
+    <div class="sidenav sidenav-create" style="display: none;">
+        <a class="sidenav-item sidenav-back ui-create-back" tabindex="-1" href="#">
+            <i class="fa fa-angle-left fa-fw" style="width:auto"></i>
+            <i class="fa fa-plus fa-fw" style="margin: 2px 6px 0px 15px;"></i>
+            建立
+        </a>
+        <a class="sidenav-item ui-new" tabindex="-1" href="https://hackmd.io/new" target="_blank"><i class="fa fa-plus fa-fw"></i>
+            <span>建立筆記</span></a>
+        <a class="sidenav-item ui-new-with-template" tabindex="-1" data-toggle="modal" data-target="#templateModal"><i class="fa fa-file-image-o fa-fw"></i>
+            <span>從範本新增筆記</span></a>
+    </div>
+    
+    
+    <div class="sidenav sidenav-menu" style="display: none;">
+        <a class="sidenav-item sidenav-back ui-menu-back" tabindex="-1" href="#">
+            <i class="fa fa-angle-left fa-fw" style="width:auto"></i>
+            <i class="fa fa-ellipsis-h fa-fw" style="margin: 2px 6px 0px 15px;"></i>
+            選單
+        </a>
+        <div class="divider-header">選項</div>
+        <a class="sidenav-item ui-extra-revision" tabindex="-1" data-toggle="modal" data-target="#namedRevisionModal"><i class="fa fa-history fa-fw"></i>
+            <span>
+                版本與 GitHub 同步
+            </span>
+        </a>
+        <a class="sidenav-item ui-transfer-note"><i class="fa fa-exchange fa-fw"></i>
+            <span>轉移筆記擁有權</span></a>
+        <a class="sidenav-item ui-delete-note"><i class="fa fa-trash fa-fw"></i>
+            <span>刪除此筆記</span></a>
+        <div class="divider-header">匯出</div>
+        <a class="sidenav-item ui-save-dropbox" tabindex="-1" href="#" target="_self"><i class="fa fa-dropbox fa-fw"></i><span>Dropbox</span></a>
+        <a class="sidenav-item ui-save-google-drive" tabindex="-1" href="#" target="_self">
+            <img src="https://hackmd.io/images/logo_google_drive.png" alt="Google Drive" class="fa fa-fw" />
+            <span>Export to Google Drive</span>
+        </a>
+        
+            <a class="sidenav-item ui-save-gist" tabindex="-1" href="#" target="_blank"><i class="fa fa-github fa-fw"></i><span>Gist</span></a>
+        
+        
+        
+        <a class="sidenav-item ui-save-arweave sidenav-arweave-export-item"></a>
+        
+        <div class="divider-header">匯入</div>
+        <a class="sidenav-item ui-import-dropbox" tabindex="-1" href="#" target="_self"><i class="fa fa-dropbox fa-fw"></i><span>Dropbox</span></a>
+        <a class="sidenav-item ui-import-google-drive" tabindex="-1" href="#" target="_self">
+            <img src="https://hackmd.io/images/logo_google_drive.png" alt="Google Drive" class="fa fa-fw" />
+            <span>Import from Google Drive</span>
+        </a>
+        <a class="sidenav-item ui-import-gist" href="#" data-toggle="modal" data-target="#gistImportModal"><i class="fa fa-github fa-fw"></i><span>Gist</span></a>
+        
+        <a class="sidenav-item ui-import-clipboard" href="#" data-toggle="modal" data-target="#clipboardModal"><i class="fa fa-clipboard fa-fw"></i><span> 剪貼簿</span></a>
+        
+        <a class="sidenav-item ui-import-arweave sidenav-arweave-import-item"></a>
+        
+        <div class="divider-header">下載</div>
+        <a class="sidenav-item ui-download-markdown" tabindex="-1" href="#" target="_blank"><i class="fa fa-file-text fa-fw"></i><span>Markdown</span></a>
+        <a class="sidenav-item ui-download-html" tabindex="-1" href="#" target="_blank"><i class="fa fa-file-code-o fa-fw"></i><span>HTML</span></a>
+        <a class="sidenav-item ui-download-raw-html" tabindex="-1" href="#" target="_blank"><i class="fa fa-file-code-o fa-fw"></i><span> 純 HTML</span></a>
+        
+    </div>
+    <div class="sidenav sidenav-profile" style="display: none;">
+        
+            <a class="sidenav-item sidenav-back ui-profile-menu-back dark-border">
+                <i class="fa fa-angle-left fa-fw" style="width: auto;"></i>
+                <img class="ui-avatar" width="22" height="22" style="border-radius: 100%; margin: 2px 6px 0px 15px;"  src="https://lh3.googleusercontent.com/a/AGNmyxajqHwvV2RbYheCuJx5lF-prIBnYHvcgAQ7c4fH=s96-c">
+                <span>楊佳誠</span>
+            </a>
+            
+                <a href="https://hackmd.io/profile" target="_blank" class="sidenav-item ui-profile"><i class="fa fa-user-circle-o fa-fw"></i><span>個人公開頁</span></a>
+            
+            <a href="https://hackmd.io/features" target="_blank" class="sidenav-item ui-features"><i class="fa fa-dot-circle-o fa-fw"></i><span>功能介紹</span></a>
+            
+                <a href="https://hackmd.io/pricing" target="_blank" class="sidenav-item ui-pricing"><i class="fa fa-magic fa-fw"></i><span>收費方案</span></a>
+            
+            
+                <a href="#" class="sidenav-item" data-toggle="modal" data-target=".feedback-modal" style="color: #5cb85c"><i class="fa fa-paper-plane fa-fw"></i> 使用回饋</a>
+            
+            <a href="https://hackmd.io/settings" target="_blank" class="sidenav-item ui-settings"><i class="fa fa-gear fa-fw"></i><span>設定</span></a>
+            <a href="https://hackmd.io/logout" class="sidenav-item ui-signout"><i class="fa fa-sign-out fa-fw"></i><span>登出</span></a>
+        
+    </div>
+    <div class="sidenav full sidenav-permission permission-dropdown" style="display: none;">
+        <a class="sidenav-item sidenav-back ui-share-back" tabindex="-1" href="#">
+            <i class="fa fa-angle-left fa-fw" style="width: auto;"></i>
+            <i class="fa fa-share-alt fa-fw" style="margin: 2px 6px 0px 15px;"></i>
+            共享
+        </a>
+        
+            <li class="dropdown-header fill-username-banner" style="display: none;">
+    填寫使用者名稱，讓網址更乾淨簡短！ <span style="white-space: nowrap;"><a href="https://hackmd.io/settings" target="_blank"><i class="fa fa-gear"></i> 設定</a></span>
+</li>
+
+        
+        <div class="dropdown-header">
+            共享
+            <i class="fa fa-question-circle fa-12 tooltip-align-left" style="color: #CDCDCD"
+            title="用以下網址分享此篇筆記，請先確保您分享的對象有存取權限"
+                data-toggle="tooltip" data-placement="bottom" data-offset="0,5"></i>
+            <span class="ui-share-msg" style="display: none;">
+                已複製連結
+            </span>
+        </div>
+        <div class="ui-share-domain" style="margin-bottom: 5px; padding: 0 15px; font-size: 12px; color: #888888; word-break: break-all; overflow: hidden; text-overflow: ellipsis;">
+        </div>
+        <div class="input-group" style="padding: 0px 15px;">
+            <input type="text" class="form-control ui-share-field" maxlength="200" placeholder="https://hackmd.io" style="height: 28px; font-size: 13px;">
+            <div class="ui-share-edit-mode" style="color:#888; position: absolute; z-index: 10; font-size: 13px; top: 5px; right: 100px; display: none;">/edit</div>
+            <span class="input-group-btn">
+                <button class="btn ui-share-copy" type="button">複製</button>
+            </span>
+            <span class="input-group-btn" style="display: none">
+                <button class="btn ui-share-save" type="button">儲存</button>
+            </span>
+        </div>
+        <div style="display: flex; padding: 0px 15px; margin-top: 10px; align-items: center; justify-content: flex-end;">
+            <div class="ui-publish-type" style="flex: 1; display: flex; align-items: center;">
+                <div style="flex: 1">
+                    <div>
+                        <div class="dropdown menuitem-dropdown">
+                            <div class="menuitem-dropdown-trigger"><span class="ui-publish-type-label"><i class="fa fa-eye fa-fw" aria-hidden="true"></i> 瀏覽模式</span><i class="fa fa-angle-down menuitem-angle" aria-hidden="true" style="margin-left: 10px;"></i></div>
+                            <ul class="dropdown-menu" role="menu">
+                                <li role="presentation"><a role="menuitem" class="menuitem-item ui-mode-edit"><i class="fa fa-pencil-square-o fa-fw" aria-hidden="true"></i> 編輯模式</a></li>
+                                <li role="presentation"><a role="menuitem" class="menuitem-item ui-mode-view"><i class="fa fa-eye fa-fw" aria-hidden="true"></i> 瀏覽模式</a></li>
+                                <li role="presentation"><a role="menuitem" class="menuitem-item ui-mode-book"><i class="fa fa-book fa-fw" aria-hidden="true"></i> 書本模式</a></li>
+                                <li role="presentation"><a role="menuitem" class="menuitem-item ui-mode-slide"><i class="fa fa-television fa-fw" aria-hidden="true"></i> 簡報模式</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <i class="fa fa-question-circle fa-12 tooltip-align-left" style="color: #CDCDCD; margin-left: 5px; margin-right: 15px; font-size: 12px;"
+                title="當您分享筆記時，筆記會顯示您設定的模式"
+                    data-toggle="tooltip" data-placement="bottom" data-offset="0,5"></i>
+            </div>
+            <div class="permission-item-badge permission-item-readonly ui-publish-type-badge" style="display: none;">
+                <span name="edit"><i class="fa fa-pencil-square-o" aria-hidden="true"></i> 編輯模式</span>
+                <span name="view"><i class="fa fa-eye" aria-hidden="true"></i> 瀏覽模式</span>
+                <span name="book"><i class="fa fa-book" aria-hidden="true"></i> 書本模式</span>
+                <span name="slide"><i class="fa fa-television" aria-hidden="true"></i> 簡報模式</span>
+            </div>
+            <div>
+                <button class="btn btn-default ui-share-preview" type="button">預覽</button>
+            </div>
+        </div>
+
+        
+        <div class="ui-publish-slide-options mobile" style="display: none;">
+            <span>自訂簡報選項</span>
+            <i class="fa fa-angle-right fa-fw"></i>
+        </div>
+        <style>
+            .ui-publish-slide-options.mobile {
+                margin: 9px 15px 5px 15px;
+                width: calc(100% - 30px) !important;
+                cursor: pointer;
+            }
+        </style>
+        
+
+        <div style="border-bottom: #e5e5e5 1px solid; margin-top: 15px;"></div>
+        <div class="dropdown-header">
+            權限
+            <i class="fa fa-question-circle fa-12 tooltip-align-left" style="color: #CDCDCD" title="筆記擁有者可設定誰能閱讀、編輯此筆記" data-toggle="tooltip" data-placement="bottom" data-offset="0,5"></i>
+        </div>
+        <div class="note-permission-item">
+            <div style="display: flex; height: 26px;">
+                <span style="flex: 1;">
+                    <div style="display: table; width: 100%; height: 100%;">
+                        <div style="display: table-cell; vertical-align: middle;">
+                            可閱讀
+                        </div>
+                    </div>
+                </span>
+                <div style="flex: 2" class="ui-note-read">
+                    <div>
+                        <div class="dropdown menuitem-dropdown">
+                            <div class="menuitem-dropdown-trigger"><span class="ui-note-read-label">只有我</span><i class="fa fa-angle-down menuitem-angle" aria-hidden="true" style="margin-left: 10px;"></i></div>
+                            <ul class="dropdown-menu" role="menu">
+                                <li role="presentation"><a role="menuitem" class="menuitem-item ui-note-read-owners">只有我</a></li>
+                                <li role="presentation"><a role="menuitem" class="menuitem-item ui-note-read-signed_in_users">已登入者</a></li>
+                                <li role="presentation"><a role="menuitem" class="menuitem-item ui-note-read-everyone">所有人</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="permission-item-badge permission-item-readonly" style="display: none;" name="read">
+                    <span name="owners">只有我</span>
+                    <span name="signed_in_users">已登入者</span>
+                    <span name="everyone">所有人</span>
+                </div>
+            </div>
+        </div>
+        <div class="note-permission-item">
+            <div style="display: flex; height: 26px;">
+                <span style="flex: 1;">
+                    <div style="display: table; width: 100%; height: 100%;">
+                        <div style="display: table-cell; vertical-align: middle;">
+                            可編輯
+                        </div>
+                    </div>
+                </span>
+                <div style="flex: 2" class="ui-note-write">
+                    <div>
+                        <div class="dropdown menuitem-dropdown">
+                            <div class="menuitem-dropdown-trigger"><span class="ui-note-write-label">只有我</span><i class="fa fa-angle-down menuitem-angle" aria-hidden="true" style="margin-left: 10px;"></i></div>
+                            <ul class="dropdown-menu" role="menu">
+                                <li role="presentation"><a role="menuitem" class="menuitem-item ui-note-write-owners">只有我</a></li>
+                                <li role="presentation"><a role="menuitem" class="menuitem-item ui-note-write-signed_in_users">已登入者</a></li>
+                                <li role="presentation"><a role="menuitem" class="menuitem-item ui-note-write-everyone">所有人</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="permission-item-badge permission-item-readonly" style="display: none;" name="write">
+                    <span name="owners">只有我</span>
+                    <span name="signed_in_users">已登入者</span>
+                    <span name="everyone">所有人</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="my-2 font-semibold hmd-ph-3/2 permission-notice">
+            <small class="text-gray-600"></small>
+        </div>
+
+        
+        <div class="note-permission-item" style="text-align: right;">
+            <span class="sidenav-trigger" sidenav-target="sidenav-note-more">
+                
+                
+                <div class="note-permission-button">
+                    <span>
+                        留言權限
+                         &amp; 
+                        邀請
+                    </span>
+                    <i class="fa fa-angle-right fa-fw"></i>
+                </div>
+                <style>
+                    div.note-permission-button,
+                    div.ui-publish-slide-options {
+                        display: inline-flex;
+                        width: 100%;
+                        justify-content: space-between;
+                        padding: 8px 10px;
+                        color: #337AB7;
+                        background-color: #E7E7E7;
+                        border-radius: 4px;
+                        font-size: 14px;
+                        line-height: 16px;
+                    }
+                    div.note-permission-button:hover,
+                    div.ui-publish-slide-options:hover {
+                        filter: brightness(95%);
+                    }
+                    div.note-permission-button > span {
+                        text-align: left;
+                    }
+                </style>
+                
+            </span>
+        </div>
+        
+
+        <div class="public-publish-container" style="display: none;">
+            <div style="border-bottom: #e5e5e5 1px solid; margin-top: 16.5px;"></div>
+
+            <div class="dropdown-header">
+    公開發表
+</div>
+
+<div class="hmd-flex hmd-justify-center public-published-toggle" data-published="false">
+    <button type="button" class="btn btn-default publish hmd-flex-auto">
+        <i class="fa fa-globe" aria-hidden="true"></i>
+        已公開發表
+    </button>
+
+    <button type="button" class="btn btn-default unpublish-action hmd-flex-auto">
+        取消公開發表
+    </button>
+
+    <button type="button" class="btn btn-primary unpublish hmd-flex-auto">
+        我要公開發表
+    </button>
+</div>
+<div class="mb-[10px] px-5 community-guideline-container leading-[14px]">
+    <label class="font-normal text-3 text-gray-600 mb-[3px] flex">
+        <input type="checkbox" style="margin-top: 0; margin-right: 6px;">
+        <span>我同意 HackMD 的<a href="https://hackmd.io/@hackmd/community-guidelines" target="_blank">社群守則</a>。</span>
+    </label>
+    <span class="error-message text-red-light text-3 hidden">請勾選同意社群守則</span>
+</div>
+<div style="margin-bottom: 10px;">
+    <div class="publish-note-description-for-public-team" style="display: none; color: #888888; padding: 0 20px; white-space: initial; font-size: 13px;">網路上的所有人皆可以瀏覽及搜尋到此開放團隊的所有筆記。</div>
+    <div class="publish-note-description" style="color: #888888; padding: 0 20px; white-space: initial; font-size: 13px;">當選擇公開發表，網路上的所有人皆可以尋找及瀏覽到這篇筆記。</div>
+    <div class="how-to-publish-note-description" style="color: #888888; padding: 0 20px; white-space: initial; font-size: 13px;">在<a target="_blank" href="">公開頁面</a>檢視所有已公開發表的筆記。</div>
+</div>
+
+        </div>
+    </div>
+    <div class="sidenav full sidenav-note-more permission-dropdown" style="display: none;">
+        <a class="sidenav-item sidenav-back ui-note-more-back" tabindex="-1" href="#">
+            <i class="fa fa-angle-left fa-fw" style="width: auto; margin-right: 15px;"></i>
+            <span><span>更多設定 (留言權限、</span><span class="ui-more-invitee">邀請</span>)</span>
+        </a>
+        
+        <div class="dropdown-header">
+            留言
+            <i class="fa fa-question-circle fa-12 tooltip-align-left" style="color: #CDCDCD" title="筆記擁有者可開啟留言功能，設定誰能撰寫留言" data-toggle="tooltip" data-placement="bottom" data-offset="0,5"></i>
+            <span class="ui-comment-permission-toggle pull-right">
+                <span style="margin-left: 0; margin-right: 3px;">
+                    啟用
+                </span>
+                <span style="margin-left: 0;">
+                    <label class="switch" style="vertical-align: middle; margin-bottom: 1px;">
+                        <input type="checkbox">
+                        <span class="slider round" style="margin-left: 0;"></span>
+                    </label>
+                </span>
+            </span>
+            <div class="permission-item-badge permission-item-readonly pull-right" style="display: none;" name="comment">
+                <span name="disabled">停用</span>
+                <span name="forbidden">不開放留言</span>
+                <span name="owners">擁有者</span>
+                <span name="signed_in_users">已登入者</span>
+                <span name="everyone">所有人</span>
+            </div>
+        </div>
+        <div class="comment-permission-item ui-comment-permission-comment-mobile">
+            <div style="display: flex; height: 26px;">
+                <span style="flex: 1;">
+                    <div style="display: table; width: 100%; height: 100%;">
+                        <div style="display: table-cell; vertical-align: middle;">
+                            留言權限
+                        </div>
+                    </div>
+                </span>
+                <div style="flex: 2">
+                    <div>
+                        <div class="dropdown menuitem-dropdown">
+                            <div class="menuitem-dropdown-trigger"><span class="ui-comment-write-label">擁有者</span><i class="fa fa-angle-down menuitem-angle" aria-hidden="true" style="margin-left: 10px;"></i></div>
+                            <ul class="dropdown-menu" role="menu">
+                                <li role="presentation"><a role="menuitem" class="menuitem-item ui-comment-write-forbidden">不開放留言</a></li>
+                                <li role="presentation"><a role="menuitem" class="menuitem-item ui-comment-write-owners">擁有者</a></li>
+                                <li role="presentation"><a role="menuitem" class="menuitem-item ui-comment-write-signed_in_users">已登入者</a></li>
+                                <li role="presentation"><a role="menuitem" class="menuitem-item ui-comment-write-everyone">所有人</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="ui-invitee-divider" style="border-bottom: #e5e5e5 1px solid; margin-top: 15px;"></div>
+        
+        
+        <div class="ui-invitee-label dropdown-header">
+            受邀者
+            <i class="fa fa-question-circle fa-12 tooltip-align-left" style="color: #CDCDCD" title="筆記管理者可邀請特定使用者，擁有筆記的閱讀、編輯或邀請權限" data-toggle="tooltip" data-placement="bottom" data-offset="0,5"></i>
+        </div>
+        <div class="ui-invitee-form" style="padding-bottom: 10px;">
+            <div class="input-group" style="display: flex; padding: 0 15px;">
+                <input type="text" class="form-control search-user search-user-small ui-invitee-input" placeholder="透過 Email 搜尋使用者...">
+                <div class="input-group-append">
+                    <button class="btn btn-default ui-invitee-invite" invite-target=".search-user-small">邀請</button>
+                </div>
+            </div>
+        </div>
+        <div style="padding: 0 15px;" class="ui-invitee ui-invitee-list" data-email-invitation="true">
+        </div>
+        <div class="ui-no-invitee-label" style="padding: 0 15px 10px 15px; font-size: 12px; color: #888888; display: none;">
+            此篇筆記並沒有任何受邀者
+        </div>
+        <div class="ui-invitee-limit-label" style="padding: 0 15px; font-size: 12px; color: #888888; display: none;"></div>
+        
+    </div>
+    <div class="modal-backdrop dim ui-more-menu-back" style="display: none; margin-top: 51px;"></div>
+</nav>
+<div class="ui-spinner unselectable hidden-print"></div>
+
+    <div class="row ui-content" style="display: none;">
+    <div class="ui-edit-area unselectable">
+        <textarea id="textit"></textarea>
+    </div>
+    <div class="relative h-full ui-view-area">
+        <div class="ui-infobar container-fluid unselectable hidden-print" style="visibility: hidden;">
+            <small class="pull-left hmd-mt-1/2">
+                <span class="ui-owner hmd-dn">
+                    &thinsp;<a class="ui-user-icon small" target="_blank"></a>
+                    &nbsp;<span class="text-uppercase">擁有這篇筆記</span>
+                </span>
+
+                <span class="ui-owner-team hmd-dn">
+                    &thinsp;<a class="ui-user-icon small" target="_blank"></a>
+                    &nbsp;<span class="text-uppercase">擁有這篇筆記</span>
+                </span>
+
+                <span class="ui-lastchangeuser hmd-dn">
+                    &thinsp;<a class="ui-user-icon small" target="_blank"></a>
+                    <span class="text-uppercase ui-status-lastchange"></span>
+                </span>
+
+                <span class="ui-no-lastchangeuser hmd-dn">
+                    &thinsp;<i class="fa fa-clock-o fa-fw" style="width: 18px;"></i>
+                    <span class="text-uppercase ui-status-lastchange"></span>
+                </span>
+
+                <span class="ui-more-info hmd-dn" data-toggle="popover">
+                    &thinsp;<i class="fa fa-info-circle" aria-hidden="true"></i>
+
+                    <div class="more-info-raw hmd-dn">
+                        <span class="ui-published-note note-status-row hmd-dn">
+                            <i class="fa fa-globe" aria-hidden="true"></i>
+                            公開筆記
+                        </span>
+
+                        <span class="ui-connectedGithub note-status-row hmd-dn">
+                            <i class="fa fa-20 ui-connectedGithubIcon fa-github"></i>
+
+                            <span>與 GitHub 同步</span>
+
+                            <br>
+
+                            <a class="file-path" target="_blank"></a>
+                        </span>
+                    </div>
+                </span>
+            </small>
+
+            <span class="pull-right">
+                
+                    <span class="community-button ui-like " data-toggle="tooltip" data-placement="bottom" title="讚賞"><i class="fa fa-fw"></i><span class="text hidden-xs">讚賞</span><span class="count"></span></span>
+                    <span class="community-button ui-bookmark " data-toggle="tooltip" data-placement="bottom" title="收藏"><i class="fa fa-fw"></i><span class="text hidden-xs"><span class="bookmark-label">收藏</span><span class="bookmarked-label">已收藏</span></span></span>
+                
+                
+                <span class="ui-notification dropdown pull-right" style="display: none;">
+                    <span id="notificationLabel" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                        <div  class="ui-notification-status community-button" title="訂閱" data-toggle="tooltip" data-placement="bottom">
+                            <i class="fa fa-fw fa-bell"></i><span class="text hidden-xs">已訂閱<i class="fa fa-fw fa-angle-down"></i><i class="fa fa-fw fa-angle-up"></i></span>
+                        </div>
+                    </span>
+                    <ul class="dropdown-menu" aria-labelledby="notificationLabel">
+                        <li class="ui-notification-watch notification-menu-item"><i class="fa fa-check fa-fw"></i><i class="fa fa-bell fa-fw"></i><div class="info"><div class="title">所有通知</div><div class="description">當有任何變更時將會收到通知</div></div></li>
+                        <li class="ui-notification-mention notification-menu-item"><i class="fa fa-check fa-fw"></i><i class="fa fa-at fa-fw"></i><div class="info"><div class="title">提及我</div><div class="description">當有人提及我時才會收到通知</div></div></li>
+                        <li class="divider"></li>
+                        <!--
+                            <li class="ui-notification-list notification-menu-item"><span><a href="#"><i class="fa fa-list-ul fa-fw"></i>我的訂閱列表</a></span></li>
+                        -->
+                        <li class="ui-notification-unsubscribe notification-menu-item"><i class="fa fa-bell-slash-o fa-fw"></i>取消訂閱</li>
+                    </ul>
+                    <span class="ui-notification-subscribe community-button"><i class="fa fa-fw fa-bell-o"></i><span class="text hidden-xs">訂閱</span></span>
+                </span>
+                
+                
+                    <div class="visible-xs" style="margin-top: 10px;"></div>
+                
+            </span>
+            <div class="ui-comment-app" id="hackmd-app">
+                <div id="comment-app"></div>
+            </div>
+        </div>
+
+        <div id="comments-panel-portal" class="ui-comment-app"></div>
+
+        <div id="doc" class="markdown-body container-fluid" data-hard-breaks="true"># Cross Compile Madplay
+
+* 參考這本書Chapter 7.4：[ARM 嵌入式系统移植实战开发](http://www.wenqujingdian.com/Public/editor/attached/file/20180317/20180317215634_64129.pdf)
+* 裡面有些指令有錯，因此下面的command有做修正
+
+## Cross Compile 需要的庫
+
+* 解壓所需的文件
+```
+mkdir /usr/local/madplay-source
+tar zxvf zlib-1.2.3.tar.gz -C /usr/local/madplay-source/
+tar zxvf libid3tag-0.15.1b.tar.gz -C /usr/local/madplay-source/ 
+tar zxvf libmad-0.15.1b.tar.gz -C /usr/local/madplay-source/ 
+tar zxvf madplay-0.15.2b.tar.gz -C /usr/local/madplay-source/
+```
+### zlib
+```
+mkdir /usr/local/mymadplay/zlib-1.2.3
+./configure -shared --prefix=/usr/local/mymadplay/zlib-1.2.3
+```
+
+```
+gedit Makefile
+```
+* 修改下列參數：
+* AR=arm-linux-gnueabihf-ar rc: 這用於指定靜態庫（archive）的創建命令，使用 arm-linux-gnueabihf-ar 創建一個靜態庫。
+* RANLIB=arm-linux-gnueabihf-ranlib：這指定了庫索引（library index）的創建命令，即使用 arm-linux-gnueabihf-ranlib 創建一個庫的索引。
+```
+CC = arm-linux-gnueabihf-gcc \
+LDSHARED=arm-linux-gnueabihf-gcc \
+-shared -Wl,-soname,libz.so.1 \
+CPP=arm-linux-gnueabihf-gcc -E \
+AR=arm-linux-gnueabihf-ar rc \
+RANLIB=arm-linux-gnueabihf-ranlib
+```
+
+```
+make
+make install
+```
+
+### libid3tag
+
+* 修改配置
+* --prefix=/usr/local/madplay-source/libid3tag: 這個選項指定了軟件包的安裝目錄，即將編譯後的文件安裝到 /usr/local/madplay-source/libid3tag 目錄中。
+* CC：使用交叉編譯器 arm-linux-gnueabihf-gcc 來進行編譯
+* --host=arm-linux-gnueabihf：這指定了目標主機的體系結構，
+* CPPFLAGS=-I：指定了頭文件(include)的搜索路徑
+* LDFLAGS=-L：指定鏈接器的選項，具體來說是指定了庫文件（library）的搜索路徑，
+```
+./configure --prefix=/usr/local/madplay-source/libid3tag \
+CC=arm-linux-gnueabihf-gcc --host=arm-linux-gnueabihf  \ 
+CPPFLAGS=-I/usr/local/mymadplay/zlib-1.2.3/include/ \
+LDFLAGS=-L/usr/local/mymadplay/zlib-1.2.3/lib/ \
+make
+make install
+```
+
+### libmad
+```
+./configure --prefix=/usr/local/madplay-source/libmad \
+CC=arm-linux-gnueabihf-gcc \
+--host=arm-linux-gnueabihf \
+CPPFLAGS=-I/usr/local/mymadplay/libid3tag/include/ \
+LDFLAGS=-L/usr/local/mymadplay/libid3tag/lib  \
+make
+```
+* [報錯按這篇修改](https://www.twblogs.net/a/5e6b933dbd9eee211685f17d?fbclid=IwAR1a9ZtyoccMP_94uWY)
+```
+gedit Makefile
+//remove -fforce-mem
+```
+```
+gedit fixed.h
+將
+# define MAD_F_MLN(hi, lo) \
+asm (&#34;rsbs %0, %2, #0\n\t&#34; \ &#34;rsc %1, %3, #0&#34; \
+: &#34;=r&#34; (lo), &#34;=r&#34; (hi) \
+: &#34;0&#34; (lo), &#34;1&#34; (hi) \
+: &#34;cc&#34;)
+改爲
+#ifdef __thumb__
+/* In Thumb-2, the RSB-immediate instruction is only allowed with a zero operand. If needed this code can also support Thumb-1
+(simply append &#34;s&#34; to the end of the second two instructions). */
+# define MAD_F_MLN(hi, lo) \
+asm (&#34;rsbs %0, %0, #0\n\t&#34; \
+&#34; sbc %1, %1, %1\n\t&#34; \
+&#34;sub %1, %1, %2&#34; \
+: &#34;+&amp;r&#34; (lo), &#34;=&amp;r&#34; (hi) \ : &#34;r&#34; (hi) \
+: &#34;cc&#34;)
+#else /* ! __thumb__ */
+# define MAD_F_MLN(hi, lo) \
+asm (&#34;rsbs %0, %2, #0\n\t&#34; \ &#34;rsc %1, %3, #0&#34; \
+: &#34;=r&#34; (lo), &#34;=r&#34; (hi) \
+: &#34;=&amp;r&#34; (lo), &#34;=r&#34; (hi) \ : &#34;0&#34; (lo), &#34;1&#34; (hi) \
+: &#34;cc&#34;)
+#endif /* __thumb__ */
+
+```
+```
+make
+make install
+```
+
+### madplay
+```
+./configure \
+--prefix=/usr/local/mymadplay/madplay-0.15.2 \ 
+CC=arm-linux-gnueabihf-gcc \ 
+--host=arm-linux-gnueabihf \
+CPPFLAGS=&#34;-I/usr/local/madplay-source/libid3tag/include/ -I/usr/local/madplay-source/libmad/include/&#34; \
+LDFLAGS=&#34;-L/usr/local/mymadplay/zlib-1.2.3/lib/ \
+-L/usr/local/madplay-source/libid3tag/lib/ \
+-L/usr/local/madplay-source/libmad/lib/&#34;
+make
+make install
+```
+* 確認執行所需要的依賴
+```
+arm-linux-gnueabihf-readelf -d madplay | grep Shared 
+#
+Shared library: [libmad.so.0] 
+Shared library: [libid3tag.so.0]
+Shared library: [libm.so.6]
+Shared library: [libc.so.6]
+Shared library: [ld-linux-armhf.so.3]
+```
+* 確認庫的連結
+```
+cd /usr/local/madplay-source/libmad/lib
+ls -l /usr/local/madplay-source/libmad/lib/libmad.so.0
+# lrwxrwxrwx 1 root root 15 11月 24 09:18 /usr/local/madplay-source/libmad/lib/libmad.so.0 -&gt; libmad.so.0.2.1
+ls -l /usr/local/madplay-source/libid3tag/lib/libid3tag.so.0
+# lrwxrwxrwx 1 root root 18 11月 24 09:09 /usr/local/madplay-source/libid3tag/lib/libid3tag.so.0 -&gt; libid3tag.so.0.3.0
+```
+### aplay
+* [參考資料](http://www.armbbs.net/home.php?mod=space&amp;uid=4351&amp;do=blog&amp;id=260&amp;mobile=no)
+* 流程與上述都差不多，交叉編譯後，把東西與依賴上傳到板子上
+```
+/configure --host=arm-linux-gnueabihf \
+--prefix=/home/book/downloads/madplay/arm-alsa \
+--enable-static \
+--disable-shared \
+--disable-python \
+--disable-alsamixer \
+--disable-xmlto \ --with-configdir=/usr/local/share/alsa \ --with-plugindir=/usr/local/lib/alsa_lib \ CC=arm-linux-gnueabihf-gcc \ CXX=arm-linux-gnueabihf-g++ \ LD=arm-linux-gnueabihf-ld
+make
+make install
+```
+* 測試aplay
+```
+aplay a.wav
+```
+
+### 將madplay移植到開發版
+
+1. 將 PC 機的libmad.so.0.2.1和libid3tag.so.0.3.0 兩個庫檔案拷貝到開發板的/lib目錄下
+2. 建立軟連結檔案 libmad.so.0 和 libid3tag.so.0 在開發板終端使用以下命令建立: 
+```ln -s libid3tag.so.0.3.0 libid3tag.so.0
+ln -s libmad.so.0.2.1 libmad.so.0
+```
+3. 查看移植是否成功
+在開發板終端機輸入指令
+```
+ls -l libmad.so.0 libid3tag.so.0
+```
+如果出現以下結果則表示移植成功: 
+```
+lrwxrwxrwx1root root 18Mar 909:58libid3tag.so.0 -&gt; libid3tag.so.0.3.0
+lrwxrwxrwx 1root root 15Mar 909:58libmad.so.0 -&gt; libmad.so.0.2.1
+```
+4. 移植 madplay應用程式到開發板
+把/usr/local/mymadplay/madplay-0.15.2/bin 目 錄 下 的 可 執 行 文 件 madplay 複製到開發板/usr/bin下面,再傳一首.mp3格式的音樂檔案到開發板/mnt目錄。
+5. 測試 madplay是否移植成功
+在開發板控制終 端 下 進 入/mnt目 錄,使 用 “命 令 madplay+ 文 件 名”的 形 式 播 放 mp3格式的音樂文件,如果成功播放則說明移植 madplay成功。
+```
+madplay -o wav:a.wav a.mp3 &amp; aplay a.wav
+```
+
+
+
+</div>
+
+        <section class="absolute top-0 bottom-0 left-0 right-0 z-50 overflow-hidden slide-preview-container" style="display: none;">
+            <link rel="stylesheet" href="https://assets.hackmd.io/build/reveal.js/dist/theme/defaultTheme.css" id="theme">
+            <div class="h-full reveal">
+                <div class="slides" style="display: none;"></div>
+            </div>
+        </section>
+
+        <div class="ui-toc dropup unselectable hidden-print" style="display:none;">
+            <div class="pull-left dropdown">
+                <a id="tocLabel" class="ui-toc-label btn btn-default" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false" title="目錄">
+                    <i class="fa fa-bars"></i>
+                </a>
+                <ul id="ui-toc" class="ui-toc-dropdown dropdown-menu" aria-labelledby="tocLabel">
+                </ul>
+            </div>
+        </div>
+        <div class="toc-placeholder hidden"></div>
+        <div id="ui-toc-affix" class="ui-affix-toc ui-toc-dropdown unselectable hidden-print" data-spy="affix" style="top:51px;display:none;"></div>
+    </div>
+</div>
+<!-- clipboard modal -->
+<div class="modal fade" id="clipboardModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title" id="myModalLabel">從剪貼簿匯入</h4>
+            </div>
+            <div class="modal-body">
+                <div contenteditable data-ph="在這裡貼上 Markdown 或是網頁內容..." id="clipboardModalContent" style="overflow:auto;max-height:50vh"></div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                <button type="button" class="btn btn-danger" id="clipboardModalClear">清空</button>
+                <button type="button" class="btn btn-primary" id="clipboardModalConfirm">匯入</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- basic use modal -->
+<div class="modal fade basic-use-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title" id="myModalLabel"><i class="fa fa-lock"></i> 您需要寫入權限</h4>
+            </div>
+            <div class="modal-body" style="color:black;">
+                <h5>您目前的權限只能瀏覽，請向系統管理員取得編輯及留言的權限</h5>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary ui-request-permission">請求權限</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- team locked modal -->
+<div class="modal fade team-locked-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title" id="myModalLabel"><i class="fa fa-lock"></i> 此團隊已被停用</h4>
+            </div>
+            <div class="modal-body" style="color:black;">
+                <h5>抱歉，此團隊已被停用，無法編輯筆記</h5>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger" data-dismiss="modal">好的</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- locked modal -->
+<div class="modal fade locked-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title" id="myModalLabel"><i class="fa fa-lock"></i> 此份筆記已被鎖定</h4>
+            </div>
+            <div class="modal-body" style="color:black;">
+                <h5>抱歉，只有擁有者可以編輯此筆記</h5>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger" data-dismiss="modal">好的</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- limit modal -->
+<div class="modal fade limit-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title" id="myModalLabel"><i class="fa fa-exclamation-triangle"></i> 到達上限</h4>
+            </div>
+            <div class="modal-body" style="color:black;">
+                <h5>抱歉，您已使用到此份筆記可用的最大長度</h5>
+                <strong>請減少內容或是將內容切成更多筆記，謝謝！</strong>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-warning" data-dismiss="modal">好的</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- gist import modal -->
+<div class="modal fade" id="gistImportModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title" id="myModalLabel">從 Gist 匯入</h4>
+            </div>
+            <div class="modal-body">
+                <input type="url" class="form-control" placeholder="在這裡貼上 gist 網址... (like: https://gist.github.com/username/gistid)" id="gistImportModalContent">
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                <button type="button" class="btn btn-danger" id="gistImportModalClear">清空</button>
+                <button type="button" class="btn btn-primary" id="gistImportModalConfirm">匯入</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- snippet import modal -->
+<div class="modal fade" id="snippetImportModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title" id="myModalLabel">從 Snippet 匯入</h4>
+            </div>
+            <div class="modal-body">
+                <input type="hidden" id="snippetImportModalAccessToken" />
+                <input type="hidden" id="snippetImportModalBaseURL" />
+                <div class="ui-field-contain" style="display:table;margin-bottom:10px;width:100%;">
+                    <div style="display:table-row;margin-bottom:5px;">
+                        <label style="display:table-cell;">專案</label>
+                        <select class="form-control" id="snippetImportModalProjects" style="display:table-cell;" disabled="disabled">
+                            <option value="init" selected="selected" disabled="disabled">從可用的專案中選擇</option>
+                        </select>
+                    </div>
+                    <div style="display:table-row;">
+                        <label style="display:table-cell;">Snippet</label>
+                        <select class="form-control" id="snippetImportModalSnippets" style="display:table-cell;" disabled="disabled">
+                            <option value="init" selected="selected" disabled="disabled">從可用的 Snippets 中選擇</option>
+                        </select>
+                    </div>
+                </div>
+                <p class="snippet-import-or">或是</p>
+                <input type="url" class="form-control" placeholder="/projects/:id/snippets/:snippet_id" id="snippetImportModalContent" disabled="disabled">
+            </div>
+            <div class="modal-footer">
+                <span id="snippetImportModalLoading"><i class="fa fa-refresh fa-spin fa-fw"></i></span>
+                <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                <button type="button" class="btn btn-danger" id="snippetImportModalClear">清空</button>
+                <button type="button" class="btn btn-primary" id="snippetImportModalConfirm" disabled="disabled">匯入</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- snippet export modal -->
+<div class="modal fade" id="snippetExportModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title" id="myModalLabel">匯出到 Snippet</h4>
+            </div>
+            <div class="modal-body">
+                <input type="hidden" id="snippetExportModalAccessToken" />
+                <input type="hidden" id="snippetExportModalBaseURL" />
+                <div class="ui-field-contain" style="display:table;margin-bottom:10px;width:100%;">
+                    <div style="display:table-row;margin-bottom:5px;">
+                        <label style="display:table-cell;">標題</label>
+                        <input class="form-control" placeholder="new snippet" type="text" id="snippetExportModalTitle" />
+                    </div>
+                    <div style="display:table-row;margin-bottom:5px;">
+                        <label style="display:table-cell;">檔名</label>
+                        <input class="form-control" placeholder="new_snippet.md" type="text" id="snippetExportModalFileName" />
+                    </div>
+                    <div style="display:table-row;margin-bottom:5px;">
+                        <label style="display:table-cell;">專案</label>
+                        <select class="form-control" id="snippetExportModalProjects" style="display:table-cell;">
+                            <option value="init" selected="selected" disabled="disabled">選擇可用的專案</option>
+                        </select>
+                    </div>
+                    <div style="display:table-row;margin-bottom:5px;">
+                        <label style="display:table-cell;">可見層級</label>
+                        <select class="form-control" id="snippetExportModalVisibility" style="display:table-cell;">
+                            <option value="" selected="selected" disabled="disabled">選擇可見層級</option>
+                            <option value="0">Private</option>
+                            <option value="10">Internal</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <span id="snippetExportModalLoading"><i class="fa fa-refresh fa-spin fa-fw"></i></span>
+                <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                <button type="button" class="btn btn-primary" id="snippetExportModalConfirm">匯出</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- delete modal -->
+<div class="modal fade delete-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title" id="myModalLabel">您確定嗎？</h4>
+            </div>
+            <div class="modal-body" style="color:black;">
+                <h5 class="ui-delete-modal-msg">您確定要將這篇筆記刪除嗎？</h5>
+                <strong class="ui-delete-modal-item">全部的使用者都將會失去連線。</strong>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                <button type="button" class="btn btn-danger ui-delete-modal-confirm">確定</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- template notes modal -->
+<div class="modal fade template-modal" id="templateModal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true"  >
+    <div class="modal-dialog modal-lg" style="width: calc(100vw - 20px); max-width: 1000px;">
+        <div class="modal-content template-content">
+            <div class="modal-header">
+                <button type="button" class="close ui-template-cancel visible-xs hidden-xs" style="margin-top: 2px !important; font-size: 15px !important; display: none;"><span aria-hidden="true">取消</span></button>
+                <button type="button" class="close ui-template-close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true"><i class="fa fa-times fa-18"></i></span></button>
+                <h4 class="modal-title ui-template-title" id="mySmallModalLabel"><i class="fa fa-file-image-o"></i> <span>從範本新增筆記</span></h4>
+                <h4 class="modal-title visible-xs hidden-xs ui-template-title-xs"><i class="fa fa-file-image-o"></i> <span>從範本新增筆記</span></h4>
+            </div>
+            <div class="modal-body" style="padding: 0px; overflow-x: hidden;">
+                <div class="row">
+                    <div class="col-sm-8 template-preview-container hidden-xs">
+                        <div>
+                            <div class="ui-template-spinner unselectable hidden-print"></div>
+                            <iframe class="template-viewer" style="width: 100%; height: 100%; border: none;"></iframe>
+                            <div class="template-empty ui-template-viewer-empty" style="display: none; margin: 0px;">
+                                <img src="https://hackmd.io/not-available.svg">
+                                <div>
+                                    <div>哎呀</div>
+                                    <div>這個範本無法使用</div>
+                                </div>
+                            </div>
+                        </div>
+                        <button type="button" class="visible-xs btn btn-primary ui-use-template-btn-mobile">套用此範本</button>
+                    </div>
+                    <div class="col-sm-4 template-list-container">
+                        <div class="ui-templates-container">
+                            <div class="border-0 border-b border-gray-200 border-solid template-button-container hmd-pa-2">
+                                
+                                    <button type="button" class="w-full btn btn-default ui-create-template-btn">
+                                        <span style="margin-right: -20px;">
+                                            建立新範本
+                                        </span>
+                                        <i class="fa fa-plus fa-fw" style="float: right; margin-top: 3px;"></i>
+                                    </button>
+                                
+
+                                <p style="margin-top: 15px; display: none;" class="template-quota-alert">
+                                    <span class="template-quota-description" style="color: #777777;"></span>
+                                    <br>
+                                    <a target="_blank" href="/?nav=billing" class="template-quota-upgrade-now">
+                                        立即升級
+                                        <i class="fa fa-fw fa-angle-right" aria-hidden="true"></i>
+                                    </a>
+                                </p>
+                            </div>
+
+                            <div class="dropdown ui-template-list-filter" style="margin: 20px;">
+                                <a class="ui-template-list-filter-label" id="template-list-filter" data-filter-type="all" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span>全部範本</span><i class="fa fa-angle-down" aria-hidden="true" style="margin-left: 10px;"></i></a>
+                                <ul class="dropdown-menu" role="menu" aria-labelledby="template-list-filter" style="right: 0px; left: auto;">
+                                    <li role="presentation"><a role="menuitem" class="ui-template-filter-all" tabindex="-1" href="#">全部範本</a></li>
+                                    
+                                    <li role="presentation"><a role="menuitem" class="ui-template-filter-default" tabindex="-1" href="#">預設範本</a></li>
+                                    <li role="presentation"><a role="menuitem" class="ui-template-filter-personal" tabindex="-1" href="#">個人範本</a></li>
+                                    
+                                    <li role="presentation"><a role="menuitem" class="ui-template-filter-team" tabindex="-1" href="#">團隊範本</a></li>
+                                    
+                                    <li role="presentation"><a role="menuitem" class="ui-template-filter-shared" tabindex="-1" href="#">與我分享</a></li>
+                                    
+                                </ul>
+                            </div>
+                            <div class="template-empty ui-template-list-empty">
+                                <i class="fa fa-file-image-o" aria-hidden="true"></i>
+                                <div>沒有任何範本</div>
+                            </div>
+                            <div class="list-group ui-template-list" style="flex:1;">
+                            </div>
+                            <button type="button" class="btn btn-primary ui-use-template-btn hidden-xs">套用此範本</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- create template modal -->
+<div class="modal fade create-template-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true"  >
+    <div class="modal-dialog modal-lg" style="width: calc(100vw - 20px); max-width: 860px;">
+        <form>
+            <div class="modal-content template-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close" style="margin-top: 2px; height: 17px;"><span aria-hidden="true"><i class="fa fa-times fa-18"></i></span>
+                    </button>
+                    <h4 class="modal-title" id="myModalLabel">建立自訂範本</h4>
+                </div>
+
+                <div class="modal-body hmd-text-center" style="color:black; padding: 20px; padding-bottom: 10px; text-align: left;">
+                    <div class="mb-5 template-quota-excceed-block">
+                        <span class="template-quota-description" style="color: #777777;"></span>
+                        <br>
+                        <a target="_blank" href="/?nav=billing" class="template-quota-upgrade-now">
+                            立即升級
+                            <i class="fa fa-fw fa-angle-right" aria-hidden="true"></i>
+                        </a>
+                    </div>
+
+
+                    <div class="grid items-center grid-cols-12 form-group mb-7" >
+                        <label class="col-span-4 font-normal text-black-brand" for="templateName">範本名稱</label>
+
+                        <input type="text" id="templateName" class="col-span-8 form-control" placeholder="範本名稱" aria-label="TemplateName" aria-describedby="template-name" maxlength="250" required>
+                    </div>
+
+                    <div class="grid items-start grid-cols-12 form-group creation-method-option">
+                        <label class="col-span-4 font-normal text-black-brand" for="templateName">建立方式</label>
+
+                        <div class="col-span-8">
+                            <label class="w-full font-normal ui-save-template-directly" for="save-template-directly">
+                                <input type="radio" name="save-template" value="save-directly" checked id="save-template-directly">
+                                <span class="ml-2">此筆記直接存成範本</span>
+                            </label>
+
+                            <label class="w-full font-normal ui-save-template-as-another-template" for="save-template-as-another-template">
+                                <input type="radio" name="save-template" value="save-as-another-template" id="save-template-as-another-template">
+                                <span class="ml-2">另存成範本</span>
+                            </label>
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="modal-footer" style="border: none; padding: 20px;">
+                    <button type="button" class="btn btn-default" data-dismiss="modal" style="flex:1;">取消</button>
+                    <button type="submit" class="btn btn-primary ui-create-template-modal-confirm" style="flex:1;">建立</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- delete template modal -->
+<div class="modal fade delete-template-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content template-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close" style="margin-top: 2px; height: 17px;"><span aria-hidden="true"><i class="fa fa-times fa-18"></i></span>
+                </button>
+                <h4 class="modal-title" id="myModalLabel">刪除範本</h4>
+            </div>
+            <div class="modal-body hmd-text-center" style="color:black; padding: 14.5px 15px; padding-bottom: 0px; text-align: left;">
+                <p class="ui-delete-modal-msg" style="font-size: 15px;">您確定要刪除這個範本嗎？</p>
+                <div class="form-check" style="display: flex;">
+                    <input type="checkbox" class="form-check-input ui-delete-note-check" style="margin-top: 7px;" id="deleteNoteCheck">
+                    <label class="form-check-label" style="margin-top: 3px; margin-left: 5px; font-weight: 400;" for="deleteNoteCheck">
+                        保留範本內容
+                        <div style="font-size: 13px; margin-top: 5px; color: #818181; line-height: 18px;">僅從範本庫移除並轉為一般筆記，且保留筆記內容與版本、留言等</div>
+                    </label>
+                </div>
+            </div>
+            <div class="modal-footer" style="border: none; padding: 20px 15px; display: flex;">
+                <button type="button" class="btn btn-default" data-dismiss="modal" style="flex:1;">取消</button>
+                <button type="button" class="btn btn-danger ui-delete-template-modal-confirm" style="flex:1;">刪除</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- refresh modal -->
+<div class="modal fade" id="refreshModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title" id="myModalLabel">此頁面需要重新整理</h4>
+            </div>
+            <div class="modal-body">
+                <div class="incompatible-version">
+                    <h5>您使用的不是相容的客戶端</h5>
+                    <strong>請重新整理來更新</strong>
+                </div>
+                <div class="new-version" style="display:none;">
+                    <h5>新版本來了！</h5>
+                    <a href="https://hackmd.io/s/release-notes" target="_blank">請由此查閱更新紀錄</a>
+                    <br>
+                    <strong>請重新整理來享受最新功能</strong>
+                </div>
+                <div class="user-state-changed" style="display:none;">
+                    <h5>您的使用者狀態已變更</h5>
+                    <strong>請重新整理來載入新的使用者狀態</strong>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" id="refreshModalRefresh">重新整理</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- signin modal -->
+
+<div class="modal fade signin-modal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close" style="margin-top: 10px; right: 20px; position: absolute;"><span aria-hidden="true">&times;</span></button>
+            
+
+
+
+
+
+
+    
+
+
+
+
+
+
+
+<h3>登入</h3>
+
+<form data-toggle="validator" role="form" class="form-horizontal" method="post" enctype="application/x-www-form-urlencoded" id="signin-form">
+    <div class="hmd-dn"><input type="hidden" name="_csrf" value="RCSBoNv0-E-dwNhhat5lHdDuPpOGh6iFxzQ4"></div>
+    <div class="hmd-dn"><input type="hidden" name="create_team" value="false"></div>
+    <div class="hmd-dn"><input type="hidden" name="create_paid_team" value="false"></div>
+    <div class="form-group  ">
+        <label for="email" class="control-label">Email</label>
+        <label for="inputEmail" class="control-label pull-right errors">
+            
+        </label>
+        <span class="help-block control-label with-errors pull-right" style="display: inline;"></span>
+        <div class="input-block">
+            
+                <input type="email" class="form-control" name="email" placeholder="您的 Email" required autocomplete="email">
+            
+            <span class="error-sign"></span>
+        </div>
+    </div>
+    <div class="form-group ">
+        <label for="password" class="control-label">密碼</label>
+        <label for="inputPassword" class="control-label pull-right errors">
+            
+        </label>
+        <span class="help-block control-label with-errors pull-right" style="display: inline;"></span>
+        <div class="input-block">
+            <input type="password" class="form-control" name="password" placeholder="您的密碼" required autocomplete="current-password">
+            <span class="error-sign"></span>
+            
+                <span class="control-label pull-right" style="font-size: 13px; margin-top: 5px;"><a href="https://hackmd.io/settings/forgotPassword" style="text-decoration: underline;">忘記密碼</a></span>
+            
+        </div>
+    </div>
+
+    <div style="text-align: center; padding-top: 15px; margin-bottom: 0px;">
+        
+            <input type="hidden" id="recaptcha-token" name="g-recaptcha-response">
+        
+
+        
+            <input type="submit" class="btn btn-success btn-large" formaction="https://hackmd.io/login" value="登入">
+        
+
+        
+    </div>
+</form>
+
+
+
+
+
+
+
+
+    
+        <p class="separator">或是</p>
+    
+
+    
+        <p>繼續登入，代表您同意<a href="https://hackmd.io/s/terms" target="_blank">服務條款</a>。</p>
+    
+
+    
+
+
+
+
+
+
+
+
+ 
+
+
+
+<script id="gsi-client" src="https://accounts.google.com/gsi/client" async defer nonce="c75a2a09-933c-44fd-80aa-bbd70ee1a07b"></script>
+<script nonce="c75a2a09-933c-44fd-80aa-bbd70ee1a07b">
+    function handleCredentialResponse(response) {
+        const form = document.getElementById('sign-in-with-google-form')
+        form.children.credential.value = response.credential
+        form.children.method.value = location.href.toLowerCase() === 'https://hackmd.io/settings#general' ? 'merge' : 'login'
+        form.submit()
+    }
+    var GSI_READY = new Promise(function (resolve) {
+        function initialize () {
+            google.accounts.id.initialize({
+                client_id: '911617723593-drikdibvvn63slfd6kbqigo8ql1no55s.apps.googleusercontent.com',
+                callback: handleCredentialResponse
+            })
+            const loginPath = 'https://hackmd.io/login'
+            const joinPath = 'https://hackmd.io/join'
+            const renderButton = function () {
+                google.accounts.id.renderButton(
+                    document.getElementById('sign-in-with-google-button'),
+                    { type: 'standard', width: 250 }
+                )
+            }
+            if (location.href.toLowerCase() === loginPath || location.href.toLowerCase() === joinPath) {
+                renderButton()
+            } else {
+                $('.signin-modal').one('shown.bs.modal', function () {
+                    renderButton()
+                })
+            }
+            resolve()
+        }
+
+        window.addEventListener('load', function () { initialize() })
+    })
+</script>
+<form class="hidden" id="sign-in-with-google-form" action="/auth/google" method="post">
+    <input type="hidden" name="credential">
+    <input type="hidden" name="method">
+</form>
+ 
+
+<div class="social-buttons-container">
+    
+    <div id="sign-in-with-google-button"></div>
+    
+    
+    <a href="https://hackmd.io/auth/facebook" class="btn btn-lg btn-block btn-social btn-facebook">
+        <i class="fa fa-facebook"></i> 透過 Facebook 登入
+    </a>
+    
+    
+    <a href="https://hackmd.io/auth/twitter" class="btn btn-lg btn-block btn-social btn-twitter">
+        <i class="fa fa-twitter"></i> 透過 Twitter 登入
+    </a>
+    
+    
+    <a href="https://hackmd.io/auth/github" class="btn btn-lg btn-block btn-social btn-github">
+        <i class="fa fa-github"></i> 透過 GitHub 登入
+    </a>
+    
+    
+    <a href="https://hackmd.io/auth/dropbox" class="btn btn-lg btn-block btn-social btn-dropbox">
+        <i class="fa fa-dropbox"></i> 透過 Dropbox 登入
+    </a>
+    
+    
+    
+</div>
+
+
+
+
+
+    <div >
+        <p>第一次使用 HackMD？ <a href="https://hackmd.io/join">註冊</a></p>
+    </div>
+
+
+            
+<script nonce="c75a2a09-933c-44fd-80aa-bbd70ee1a07b">
+  (function () {
+    function onSubmit (e) {
+      const submitButton = e.target
+      const tokenInput = document.getElementById('recaptcha-token')
+      if (tokenInput.value) return
+
+      e.preventDefault()
+      grecaptcha.enterprise.ready(async () => {
+        const token = await grecaptcha.enterprise.execute('6LdtkK4ZAAAAAG1B4iENhmQTce1xNTyHu0GjgnXi', {action: 'login'})
+        tokenInput.value = token
+        submitButton.click()
+      })
+    }
+    document.querySelectorAll('#signin-form input[type="submit"]').forEach((el) => {
+      el.addEventListener('click', onSubmit)
+    })
+  })()
+</script>
+
+
+        </div>
+    </div>
+</div>
+
+<!-- help modal -->
+<div class="modal fade help-modal" id="help-modal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title" id="mySmallModalLabel"><i class="fa fa-question"></i> 協助</h4>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-lg-3">
+                        <div class="dropdown" style="margin-bottom: 30px;">
+                            <button id="helpLangDropdown" type="button" class="btn btn-default modal-lang-btn" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                切換語言
+                                <span class="caret"></span>
+                            </button>
+                            <ul class="dropdown-menu" id="modal-lang-menu" aria-labelledby="helpLangDropdown">
+                                <li><a href="#" class="modal-lang-menu-item" data-lang="en">
+                                    <i class="fa fa-check"></i> English
+                                </a></li>
+                                <li><a href="#" class="modal-lang-menu-item" data-lang="zh">
+                                    <i class="fa fa-check"></i> 中文
+                                </a></li>
+                                <li><a href="#" class="modal-lang-menu-item" data-lang="fr">
+                                    <i class="fa fa-check"></i> Français
+                                </a></li>
+                                <li><a href="#" class="modal-lang-menu-item" data-lang="de">
+                                    <i class="fa fa-check"></i> Deutsch
+                                </a></li>
+                                <li><a href="#" class="modal-lang-menu-item" data-lang="ja">
+                                    <i class="fa fa-check"></i> 日本語
+                                </a></li>
+                                <li><a href="#" class="modal-lang-menu-item" data-lang="es">
+                                    <i class="fa fa-check"></i> Español
+                                </a></li>
+                                <li><a href="#" class="modal-lang-menu-item" data-lang="ca">
+                                    <i class="fa fa-check"></i> Català
+                                </a></li>
+                                <li><a href="#" class="modal-lang-menu-item" data-lang="el">
+                                    <i class="fa fa-check"></i> Ελληνικά
+                                </a></li>
+                                <li><a href="#" class="modal-lang-menu-item" data-lang="pt">
+                                    <i class="fa fa-check"></i> Português
+                                </a></li>
+                                <li><a href="#" class="modal-lang-menu-item" data-lang="it">
+                                    <i class="fa fa-check"></i> italiano
+                                </a></li>
+                                <li><a href="#" class="modal-lang-menu-item" data-lang="tr">
+                                    <i class="fa fa-check"></i> Türkçe
+                                </a></li>
+                                <li><a href="#" class="modal-lang-menu-item" data-lang="ru">
+                                    <i class="fa fa-check"></i> Русский
+                                </a></li>
+                                <li><a href="#" class="modal-lang-menu-item" data-lang="nl">
+                                    <i class="fa fa-check"></i> Nederlands
+                                </a></li>
+                                <li><a href="#" class="modal-lang-menu-item" data-lang="hr">
+                                    <i class="fa fa-check"></i> hrvatski jezik
+                                </a></li>
+                                <li><a href="#" class="modal-lang-menu-item" data-lang="pl">
+                                    <i class="fa fa-check"></i> język polski
+                                </a></li>
+                                <li><a href="#" class="modal-lang-menu-item" data-lang="uk">
+                                    <i class="fa fa-check"></i> Українська
+                                </a></li>
+                                <li><a href="#" class="modal-lang-menu-item" data-lang="hi">
+                                    <i class="fa fa-check"></i> हिन्दी
+                                </a></li>
+                                <li><a href="#" class="modal-lang-menu-item" data-lang="sv">
+                                    <i class="fa fa-check"></i> svenska
+                                </a></li>
+                                <li><a href="#" class="modal-lang-menu-item" data-lang="eo">
+                                    <i class="fa fa-check"></i> Esperanto
+                                </a></li>
+                                <li><a href="#" class="modal-lang-menu-item" data-lang="da">
+                                    <i class="fa fa-check"></i> dansk
+                                </a></li>
+                            </ul>
+                        </div>
+                        <div class="modal-side-menu-block">
+                            <h4>教學文件</h4>
+                            <p>
+                                <a href="https://hackmd.io/c/tutorials-tw" title="Tutorials" target="_blank">使用教學 <span style="margin-left: 0.5em;"><i class="fa fa-angle-right"></i></span> </a>
+                            </p>
+                            <p>
+                                <a href="https://hackmd.io/c/tutorials-tw/%2Fs%2Fhow-to-create-book-tw" title="Book Mode Tutorial" target="_blank">書本模式教學 <span style="margin-left: 0.5em;"><i class="fa fa-angle-right"></i></span> </a>
+                            </p>
+                            <p>
+                                <a href="https://hackmd.io/c/tutorials-tw/%2Fs%2Fhow-to-create-slide-deck-tw" title="Slide Mode Tutorial" target="_blank">簡報模式教學 <span style="margin-left: 0.5em;"><i class="fa fa-angle-right"></i></span> </a>
+                            </p>
+                            <p>
+                                <a href="./yaml-metadata" title="YAML Metadata" target="_blank">YAML Metadata <span style="margin-left: 0.5em;"><i class="fa fa-angle-right"></i></span> </a>
+                            </p>
+                        </div>
+
+                        
+                        <div class="modal-side-menu-block">
+                            <h4>聯絡方式</h4>
+                            <p>
+                                <a href="https://facebook.com/hackmdio" target="_blank">Facebook <span style="margin-left: 0.5em;"><i class="fa fa-angle-right"></i></span> </a>
+                            </p>
+                            <p>
+                                <a href="https://twitter.com/hackmdio" target="_blank">Twitter <span style="margin-left: 0.5em;"><i class="fa fa-angle-right"></i></span> </a>
+                            </p>
+                            <p>
+                                <a href="https://discord.gg/yDw3AJbmwx" target="_blank">Discord <span style="margin-left: 0.5em;"><i class="fa fa-angle-right"></i></span> </a>
+                            </p>
+                            
+                                <p>
+                                    <a href="#" data-toggle="modal" data-target=".feedback-modal">使用回饋 <span style="margin-left: 0.5em;"><i class="fa fa-angle-right"></i></span> </a>
+                                </p>
+                            
+                            <p>
+                                <span>寄信給我們</span>
+                                <br>
+                                <span class="view-email-address"></span>
+                            </p>
+                        </div>
+                        
+
+                        <div class="modal-side-menu-block">
+                            <h4>資源</h4>
+                            <p>
+                                <a href="/s/release-notes" title="Tutorials" target="_blank">版本記錄 <span style="margin-left: 0.5em;"><i class="fa fa-angle-right"></i></span> </a>
+                            </p>
+                            
+                            <p>
+                                <a href="/pricing" title="YAML Metadata" target="_blank">收費方案 <span style="margin-left: 0.5em;"><i class="fa fa-angle-right"></i></span> </a>
+                            </p>
+                            
+                            <p>
+                                <a href="https://blog.hackmd.io/zh" title="部落格" target="_blank">部落格 <span style="margin-left: 0.5em;"><i class="fa fa-angle-right"></i></span> </a>
+                            </p>
+                        </div>
+
+                        <div class="modal-side-menu-block">
+                            <h4>政策</h4>
+                            <p>
+                                <a href="/s/terms" title="Tutorials" target="_blank">條款 <span style="margin-left: 0.5em;"><i class="fa fa-angle-right"></i></span> </a>
+                            </p>
+                            <p>
+                                <a href="/s/privacy" title="YAML Metadata" target="_blank">隱私權政策 <span style="margin-left: 0.5em;"><i class="fa fa-angle-right"></i></span> </a>
+                            </p>
+                        </div>
+                    </div>
+                    <div class="col-lg-9">
+                        <div class="modal-vertical-divider"></div>
+                        <div class="tabs">
+                            <h4 class="tab-item active" data-tabidx="1">快速簡表</h4>
+                            <!-- <h4 class="tab-item" data-tabidx="2">常見問題</h4> -->
+                            <div class="tab-slider-rail">
+                                <div class="tab-slider"></div>
+                            </div>
+                        </div>
+                        <table class="table table-condensed table-cheatsheet">
+                            <thead class="markdown-example-table-head">
+                                <tr>
+                                    <th>語法</th>
+                                    <th>範例</th>
+                                    <th class="hidden-xs">參考教學</th>
+                                </tr>
+                            </thead>
+                            <tbody class="markdown-body markdown-example-table-body" style="font-family: inherit; font-size: 14px; padding: 0; max-width: inherit;">
+                                <tr>
+                                    <td class="example-syntax"># 標題</td>
+                                    <td class="example-present">標題</td>
+                                    <td rowspan="14" class="show-on-zh hidden-xs"><a href="https://hackmd.io/c/tutorials-tw/%2Fs%2Fbasic-markdown-formatting-tw">基本排版</a></td>
+                                    <td class="show-on-not-zh hidden-xs"></td>
+                                </tr>
+                                <tr>
+                                    <td class="example-syntax">- 無序清單</td>
+                                    <td class="example-present"><ul style="margin: 0;"><li>無序清單</li></ul></td>
+                                    <td class="hidden-xs"></td>
+                                </tr>
+                                <tr>
+                                    <td class="example-syntax">1. 有序清單</td>
+                                    <td class="example-present"><ol style="margin: 0;"><li>有序清單</li></ol></td>
+                                    <td class="hidden-xs"></td>
+                                </tr>
+                                <tr>
+                                    <td class="example-syntax">- [ ] 待辦事項</td>
+                                    <td class="example-present"><ul style="margin: 0;"><li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled><label></label>待辦事項</li></ul></td>
+                                    <td class="hidden-xs"></td>
+                                </tr>
+                                <tr>
+                                    <td class="example-syntax">> 引用</td>
+                                    <td class="example-present"><blockquote style="margin: 0;"> 引用</blockquote></td>
+                                    <td class="hidden-xs"></td>
+                                </tr>
+                                <tr>
+                                    <td class="example-syntax">**粗體**</td>
+                                    <td class="example-present"><strong>粗體</strong></td>
+                                    <td class="hidden-xs"></td>
+                                </tr>
+                                <tr>
+                                    <td class="example-syntax">*斜體*</td>
+                                    <td class="example-present"><i>斜體</i></td>
+                                    <td class="hidden-xs"></td>
+                                </tr>
+                                <tr>
+                                    <td class="example-syntax">~~刪除線~~</td>
+                                    <td class="example-present"><s>刪除線</s></td>
+                                    <td class="hidden-xs"></td>
+                                </tr>
+                                <tr>
+                                    <td class="example-syntax">19^th^</td>
+                                    <td class="example-present">19<sup>th</sup></td>
+                                    <td class="hidden-xs"></td>
+                                </tr>
+                                <tr>
+                                    <td class="example-syntax">H~2~O</td>
+                                    <td class="example-present">H<sub>2</sub>O</td>
+                                    <td class="hidden-xs"></td>
+                                </tr>
+                                <tr>
+                                    <td class="example-syntax">++插入文字++</td>
+                                    <td class="example-present"><ins>插入文字</ins></td>
+                                    <td class="hidden-xs"></td>
+                                </tr>
+                                <tr>
+                                    <td class="example-syntax">==標記文字==</td>
+                                    <td class="example-present"><mark>標記文字</mark></td>
+                                    <td class="hidden-xs"></td>
+                                </tr>
+                                <tr>
+                                    <td class="example-syntax">[link text](https:// "title")</td>
+                                    <td class="example-present"><a>連結</a></td>
+                                    <td class="hidden-xs"></td>
+                                </tr>
+                                <tr>
+                                    <td class="example-syntax">![image alt](https:// "title")</td>
+                                    <td class="example-present">圖片</td>
+                                    <td class="hidden-xs"></td>
+                                </tr>
+                                <tr>
+                                    <td class="example-syntax">`程式碼`</td>
+                                    <td class="example-present"><code>程式碼</code></td>
+                                    <td rowspan="2" class="show-on-zh hidden-xs"><a href="https://hackmd.io/c/tutorials-tw/%2Fs%2Fhow-to-use-code-blocks-tw">在筆記中貼入程式碼</a></td>
+                                    <td class="show-on-not-zh hidden-xs"></td>
+                                </tr>
+                                <tr>
+                                    <td class="example-syntax">```javascript<br>var i = 0;<br>```</td>
+                                    <td class="example-present"><pre style="border:none !important; margin: 0;"><code class="javascript hljs"><div class="wrapper"><div class="gutter linenumber"><span data-linenumber="1"></span></div><div class="code"><span class="hljs-keyword">var</span> i = <span class="hljs-number">0</span>;</div></div></code></pre></td>
+                                    <td class="hidden-xs"></td>
+                                </tr>
+                                <tr>
+                                    <td class="example-syntax">:smile:</td>
+                                    <td class="example-present"><img align="absmiddle" alt=":smile:" class="emoji" src="./build/emojify.js/dist/images/basic/smile.png" title=":smile:"></img></td>
+                                    <td class="hidden-xs"><a href="https://github.com/ikatyang/emoji-cheat-sheet">Emoji 完整表</a></td>
+                                </tr>
+                                <tr>
+                                    <td class="example-syntax">{%youtube youtube_id %}</td>
+                                    <td class="example-present">外部</td>
+                                    <td class="hidden-xs"></td>
+                                </tr>
+                                <tr>
+                                    <td class="example-syntax">$L^aT_eX$</td>
+                                    <td class="example-present">L<sup>a</sup>T<sub>e</sub>X</td>
+                                    <td class="hidden-xs"></td>
+                                </tr>
+                                <tr>
+                                    <td class="example-syntax">:::info<br>這是警告區塊<br>:::</td>
+                                    <td class="example-present"><div class="alert alert-info" style="margin: 0;"><p>這是警告區塊</p></div></td>
+                                    <td class="hidden-xs"></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- revision modal -->
+<div class="modal fade" id="namedRevisionModal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" style="width: calc(100vw - 20px); max-width: 1200px; height: calc(100vh - 100px);">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span>
+                </button>
+                <button type="button" class="close back" aria-label="Back"><span aria-hidden="true"><i class="fa fa-arrow-left" aria-hidden="true"></i></span>
+                </button>
+                <h4 class="modal-title" id="mySmallModalLabel"><i class="fa fa-history"></i> 版本與 GitHub 同步</h4>
+            </div>
+            <div class="container-fluid modal-body hmd-pa-0 github-sync-enabled" style="max-height: calc(100vh - 100px); height: calc(100vh - 100px); overflow: hidden;">
+                
+                <div class="hidden-xs ui-github-sync" style="height: 51px; border-bottom: solid 1px #e7e7e7;">
+                    <div style="display: none;" class="signin-to-connect">
+                        登入後可將筆記連結至 GitHub
+                        <button class="btn btn-success" style="margin-left: 30px" data-toggle="modal" data-target=".signin-modal">註冊並登入</button>
+                        <a href="https://hackmd.io/c/tutorials/%2Fs%2Flink-with-github" target="_blank" style="margin-left: 30px;"><span>了解更多</span><i class="fa fa-angle-right fa-fw"></i></a></a>
+                    </div>
+                    <div style="display: none;" class="no-connect-github">
+                        此筆記尚未連結至 GitHub
+                        <button class="btn btn-primary btn-outline ui-github-pull" style="margin-left: 30px">從 GitHub 拉取</button>
+                        <button class="btn btn-primary btn-outline ui-github-push" style="margin-left: 10px">推送至 GitHub</button>
+                        <a href="https://hackmd.io/c/tutorials/%2Fs%2Flink-with-github" target="_blank" style="margin-left: 30px;"><span>了解更多</span><i class="fa fa-angle-right fa-fw"></i></a></a>
+                    </div>
+                    <div style="display: none;" class="github-status">
+                        <i class="fa fa-github"></i>&nbsp;<div class="github-path-container"><a target="_blank" class="github-path" title="" data-toggle="tooltip" data-placement="bottom" data-offset="30px,5" data-container=".github-status" data-original-title=""></a></div></span>
+
+                        <a class="ui-github-badge github-control site-ui-font" style="margin-left: 30px;">
+                            <i class="fa fa-link fa-18"></i>
+                            嵌入 Badge
+                        </a>
+                        <a class="ui-github-pull github-control" style="margin-left: 30px;">
+                            <i class="fa fa-arrow-down fa-18"></i>
+                            拉取變更
+                        </a>
+                        <a class="ui-github-push github-control"  style="margin-left: 30px;">
+                            <i class="fa fa-arrow-up fa-18"></i>
+                            推送變更
+                        </a>
+                        <a class="ui-show-github-synced-settings-modal github-control" style="margin-left: 30px;">
+                            <i class="fa fa-cog fa-18"></i>
+                            同步設定
+                        </a>
+                    </div>
+                </div>
+                
+                <div class="col-xs-12 col-sm-4 hmd-pl-0 hmd-pr-0 sidebar revision-list-container">
+                    <div class="list-group ui-named-revision-list mb-0"></div>
+                    <div class="list-group ui-upgrade-tips" style="display: none;">
+                        <div class="upgrade-tips"></div>
+                        <a class="ui-upgrade-button" target="_blank" href="/?nav=billing">立即升級<i class="fa fa-angle-right" style="margin-left: 5px"></i></a>
+                    </div>
+                    <div class="list-group ui-version-preview-list" style="display: none;"></div>
+                </div>
+                <div id="revision-editor-container" class="col-xs-12 col-sm-8 hmd-pl-0 hmd-pr-0 hmd-flex hmd-flex-column">
+                    <div id="revisionSummary" style="display: none;" class="hmd-flex">
+                        <h4 style="margin-right: 5px;">
+                            <i class="fa fa-history"></i>
+                        </h4>
+
+                        <div class="hmd-flex hmd-flex-column hmd-flex-auto">
+                            <h4 class="summary-title"></h4>
+                            <p class="summary-author-info hmd-flex hmd-flex-wrap-xs">
+                                <span class="summary-timestamp" style="margin-right: 15px;"></span>
+                                <span>版本由 &nbsp;</span>
+                                <span class="summary-authorship">
+                                    <a href="#"></a> &nbsp;
+                                </span>
+                                <span>命名</span>
+                            </p>
+                            <div class="hmd-flex hmd-items-end hmd-justify-between">
+                                <p class="summary-description" style="margin-bottom: 22px;"></p>
+                                <div class="summary-collapse-toggle">
+                                    <span class="expand">
+                                        更多
+                                        <i class="fa fa-angle-down" aria-hidden="true"></i>
+                                    </span>
+                                    <span class="collapse">
+                                        收起
+                                        <i class="fa fa-angle-up" aria-hidden="true"></i>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="dropdown-container hmd-dni-xs" id="revisionSummaryDropdown">
+                            <ul class="dropdown-menu" role="menu" aria-labelledby="menu">
+                                <li role="presentation">
+                                    <a role="menuitem" class="ui-rename-revision" id="rename-named-revision-button" tabindex="-1" href="#">
+                                        <i class="fa fa-pencil fa-fw"></i> 修改
+                                    </a>
+                                </li>
+
+                                <li role="presentation">
+                                    <a role="menuitem" class="ui-delete-revision" tabindex="-1" href="#" id="remove-named-revision-button">
+                                    <i class="fa fa-trash fa-fw"></i> 刪除</a>
+                                </li>
+                            </ul>
+                            <a class="ui-revision-action-menu" data-toggle="dropdown" style="color: #777;" aria-expanded="false"><i class="fa fa-ellipsis-h fa-fw" style="vertical-align: middle; width:100%;"></i>
+                            </a>
+                        </div>
+
+                        <div class="create-revision-button-container hmd-flex hmd-items-center hmd-dni-xs">
+                            <i class="fa fa-question-circle fa-fw tooltip-align-left" style="color: #CDCDCD; margin-right: 10px;" title="" data-toggle="tooltip" data-placement="bottom" data-offset="0,5" data-original-title="將目前的筆記狀態儲存為版本"></i>
+                            <button class="btn btn-outline btn-primary ui-create-revision-button" title="筆記內容與最新版本相同，無法儲存為新版本" data-toggle="tooltip" data-placement="bottom" data-offset="0,5">
+                                儲存為版本
+                            </button>
+                        </div>
+                    </div>
+
+                    <form data-toggle="validator" id="namedRevisionForm" style="display: none;" class="hmd-flex hmd-flex-column hmd-dni-xs" role="form">
+                        <h4 style="display: none;" class="revision-timestamp">
+                            <i style="margin-right: 1px;" class="fa fa-history"></i>
+                            <span></span>
+                        </h4>
+                        <div class="hmd-flex" style="margin-top: 10px;">
+                            <div class="hmd-flex hmd-flex-column hmd-flex-auto">
+                                <div class="hmd-flex hmd-items-center form-group">
+                                    <label class="control-label" for="name">
+                                        版本名稱
+                                    </label>
+                                    <input class="form-control" name="name" type="text" placeholder="請輸入版本名稱" required maxlength="80">
+                                </div>
+
+                                <div class="hmd-flex hmd-items-start form-group">
+                                    <label class="control-label" for="description">
+                                        版本描述
+                                    </label>
+                                    <textarea rows="3" class="form-control" name="description" placeholder="請輸入版本描述（非必填）" maxlength="500" style="max-height: 74px; resize: none;"></textarea>
+                                    <div class="help-block with-errors"></div>
+                                </div>
+                            </div>
+                            <div class="hmd-flex hmd-items-end form-group" style="margin-left: 40px;">
+                                <strong class="ui-state-message" style="position: absolute; top: 20px; color:green; padding-right: 15px;">
+                                    筆記內容與最新版本相同，無法儲存為新版本
+                                </strong>
+                                <button type="button" id="cancel-named-revision-button" class="btn btn-default" style="margin-right: 10px;">取消</button>
+                                <button type="submit" id="submit-named-revision-button" class="btn btn-primary">
+                                    命名此版本
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+
+                    <div style="height: calc(100vh - 140px); overflow: hidden;">
+                        <textarea id="namedrevisionViewer" style="display:none;"></textarea>
+                    </div>
+
+                    <div class="hmd-flex hmd-justify-between hmd-items-center hmd-dni-xs" id="revision-operation-panel">
+                        <!-- #region Compare revision dropdown menu -->
+                        <div class="diff-revision-menu hmd-flex hmd-items-center">
+                            <span>
+                                <input type="checkbox" name="compareWithLastVersion" checked>
+                            </span>
+                            <span>
+                                與
+                            </span>
+                            <div class="btn-group dropup" id="diff-revision-dropdown-menu">
+                                <button class="btn btn-default dropdown-toggle ui-diff-revision-menu hmd-flex hmd-items-center hmd-justify-between" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                                    <span>
+                                        上一版本
+                                    </span>
+                                    <i class="fa fa-angle-down fa-12" aria-hidden="true" style="margin-left: 5px;"></i>
+                                </button>
+                                <ul class="dropdown-menu pull-left" aria-labelledby="diff-revision-dropdown-menu">
+                                    <div class="dropdown-section">
+                                        <div class="section-header">
+                                            選擇一個版本
+                                        </div>
+
+                                        <div class="section-filter">
+                                            <span>
+                                                <input id="showOnlyNamedRevision" type="checkbox" name="showOnlyNamedRevision">
+                                                <label for="showOnlyNamedRevision">
+                                                    只顯示命名版本
+                                                </label>
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <div class="revision-list-container d-flex hmd-justify-center">
+                                        <div class="revision-list-inner">
+                                        </div>
+                                        <div class="empty-revision-list">
+                                            <div class="search-icon">
+                                                <img src="https://hackmd.io/empty-search-result.svg" alt="No search result">
+                                            </div>
+                                            沒有找到此版本
+                                        </div>
+                                    </div>
+                                </ul>
+                            </div>
+                            <span>
+                                的差異
+                            </span>
+                        </div>
+                        <!-- #endregion -->
+
+                        <div>
+                            <button type="button" class="btn btn-danger btn-outline ui-revisionModalRevert" style="margin-right: 10px; display: none;">還原</button>
+                            <button type="button" class="btn btn-primary btn-outline ui-revisionModalDownload">下載</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- message modal -->
+<div class="modal fade message-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-sm">
+      <div class="modal-content">
+          <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span>
+              </button>
+              <h4 class="modal-title" id="myModalLabel"></h4>
+          </div>
+          <div class="modal-body" style="color:black;">
+              <h5 style="font-weight: 500; font-size: 14px; text-align: left;"></h5>
+              <a target="_blank" style="word-break: break-all;" rel="noopener"></a>
+          </div>
+          <div class="modal-footer">
+              <button type="button" class="btn btn-default" data-dismiss="modal">好的</button>
+          </div>
+      </div>
+  </div>
+</div>
+<!-- feedback modal -->
+<div class="modal fade feedback-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class='modal-dialog modal-lg' role='document'>
+    <div class='modal-content'>
+      <div class='modal-header' style="padding: 8px 15px; font-weight: 700">
+        <button type='button' class='close' aria-label='Close' style="font-size: 26px; margin-top: -1px;" data-dismiss="modal">
+          <span aria-hidden='true'>&times;</span>
+        </button>
+        <h4 class='modal-title'>使用回饋</h4>
+      </div>
+      <div class='modal-body' style="text-align: left;">
+        <div class='alert alert-danger' style="display: none;">
+          <i class='fa fa-exclamation-triangle' aria-hidden='true' style="margin-right: 5px"></i>
+          傳送失敗，請再試一次
+        </div>
+        <h3 style="margin-top:5px">感謝您的使用</h3>
+        <p>從 0 到 10 分，請問您向朋友、家人、或同事推薦 HackMD 的可能性有多高？</p>
+        <div class="rating-group" style="margin-top: 15px; margin-bottom: 30px;"></div>
+        <p style="font-size:16px">希望您可以提供一些建議，幫助我們改善 HackMD 💪</p>
+        <form role='form' data-toggle='validator'>
+          <div class='form-group' style="margin-bottom: 10px;">
+            <textarea name='feedback' class='form-control' placeholder="請輸入您的使用回饋" rows="3" style="resize: none;" required></textarea>
+          </div>
+          <div class='checkbox' style="font-size:16px">
+            <label>
+              <input name='engage' type='checkbox' checked />
+              我願意參與使用者訪談或後續改版測試，讓開發團隊更能完整理解我的需求
+            </label>
+          </div>
+          <div class='form-group hmd-flex hmd-items-center' style="font-size: 16px; padding-left: 20px;">
+            <label style="font-weight: normal;">我的 Email：</label>
+            &nbsp;
+            <div class='hmd-flex-auto hmd-pr-0'>
+              <input type='email' name='email' class='form-control col-sm-9' aria-describedby='helpId' placeholder="請輸入您的 Email" required />
+            </div>
+          </div>
+          <div class='modal-footer' style="padding: 15px 0; border: none;">
+            <button type='button' class='btn btn-default' data-dismiss="modal">取消</button>
+            <button type='submit' class='btn btn-primary ui-feedback-submit'>送出回饋</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- feedback success modal -->
+<div class="modal fade feedback-success-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class='modal-dialog modal-sm' role='document'>
+    <div class='modal-content'>
+      <div class='modal-body' style="padding: 50px 20px; text-align: center;">
+        <img src="/images/feedback.svg" width="85" height="95" />
+        <h4>感謝您的使用回饋</h4>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- action modal -->
+<div class="modal fade action-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title" id="myModalLabel"></h4>
+            </div>
+            <div class="modal-body" style="color:black;">
+                <p></p>
+            </div>
+            <div class="hmd-flex modal-footer">
+                <button type="button" class="btn btn-default cancel hmd-flex-one" data-dismiss="modal">取消</button>
+                <button type="button" class="btn btn-primary yes hmd-flex-one" data-dismiss="modal">好的</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- action modal -->
+<div class="modal fade remove-revision-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title" id="myModalLabel">移除自訂版本</h4>
+            </div>
+            <div class="modal-body" style="color:black;">
+                <h5>您確定要移除版本名稱及版本描述嗎？</h5>
+            </div>
+            <div class="hmd-flex modal-footer">
+                <button type="button" class="btn btn-default hmd-flex-one" data-dismiss="modal">取消</button>
+                <button type="button" class="btn btn-danger hmd-flex-one" data-dismiss="modal">好的</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- transfer modal -->
+<div class="modal fade transfer-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title" id="myModalLabel">轉移筆記擁有權</h4>
+            </div>
+            <div class="modal-body" style="color:black; overflow: inherit; padding-bottom: 0;">
+                轉移到
+
+                <div class="form-group" style="margin-bottom: 0;">
+                    <div class="radio">
+                        <label>
+                            <input type="radio" name="transfer-type" value="team" required checked="checked">
+                            <span>
+                                目前已加入的團隊
+                            </span>
+                        </label>
+                    </div>
+
+                    <div class="dropdown btn-group ui-transfer-modal-team-dropdown" style="width: 100%; margin-bottom: 10px;">
+                        <button class="btn btn-default hmd-text-left dropdown-toggle" type="button" style="width: 100%; height: 40px;" id="dropdownMenuTransferToTeam" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                            <span class="ui-transfer-modal-team-label" style="line-height: 18px;">
+                                沒有可用的團隊
+                            </span>
+
+                            <span class="caret" style="position: absolute; top: 17px; right: 10px;"></span>
+                        </button>
+
+                        <ul class="dropdown-menu" aria-labelledby="dropdownMenuTransferToTeam" style="width: 100%;"></ul>
+                    </div>
+                    <div class="public-team-notice" style="font-size: 12px; color: #C9302C; display: none;">
+                        提醒您：<span class="team-name"></span> 為<b>開放團隊</b>，您將筆記轉移至此團隊後，<b>網路上的所有人皆可搜尋並看到此筆記</b>。
+                    </div>
+
+                    <div class="radio transfer-team-radio">
+                        <label>
+                            <input type="radio" name="transfer-type" value="member" required>
+                            <span>
+                                目前的團隊成員
+                            </span>
+                        </label>
+                    </div>
+
+                    <div class="dropdown btn-group ui-transfer-modal-team-member-dropdown" style="width: 100%; margin-bottom: 10px;">
+                        <button class="btn btn-default hmd-text-left dropdown-toggle" type="button" style="width: 100%; height: 40px;" id="dropdownMenuTransferToTeamMember" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                            <span class="ui-transfer-modal-team-member-label" style="line-height: 18px;">
+                                沒有可用的團隊成員
+                            </span>
+
+                            <span class="caret" style="position: absolute; top: 17px; right: 10px;"></span>
+                        </button>
+
+                        <ul class="dropdown-menu" aria-labelledby="dropdownMenuTransferToTeamMember" style="width: 100%;"></ul>
+                    </div>
+                </div>
+
+                <div class="error text-danger" style="display: none; margin-top: 10px; color: red;"></div>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">
+                    取消
+                </button>
+
+                <button type="button" class="btn btn-danger ui-transfer-modal-confirm" disabled>
+                    轉移
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- github signin modal -->
+<div class="modal fade github-signin-modal hmd-text-left" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title" id="myModalLabel">與 GitHub 同步</h4>
+            </div>
+            <div class="modal-body" style="color:black;">
+                <h4 style="border-bottom: 2px solid #cccccc; padding-bottom: 15px; margin: 5px 0px 30px 0px">請授權 HackMD 存取您的 GitHub 帳號</h4>
+                <p style="margin-bottom: 15px;">
+                    
+                        為了和 GitHub 同步檔案，請先登入 GitHub 並安裝 HackMD 的 GitHub App。
+                    
+                    <a href="https://hackmd.io/c/tutorials/%2Fs%2Flink-with-github" target="_blank">了解更多</a>
+                </p>
+
+
+                
+                    <a href=https://github.com/login/oauth/authorize?client_id=Iv1.dce7f04830297ce5&amp;redirect_uri=https%3A%2F%2Fhackmd.io%2Fapi%2Fgithub%2Fsync%2Fcallback data-href="https://github.com/apps/hackmd-hub/installations/new" type="button" class="btn btn-primary ui-github-signin-button" style="margin-bottom: 30px"><i class="fa fa-github fa-fw"></i>&nbsp;登入 GitHub</a>
+                
+
+                
+                    <p><small style="color: #888888">HackMD 透過 GitHub App 來和 GitHub 上的專案同步，登入後您將可以選擇在哪些專案上安裝 HackMD 的 App。</small></p>
+                
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- github sync modal -->
+<div class="modal fade github-sync-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span>
+                </button>
+
+                <h4 class="modal-title" id="myModalLabel">
+                    <span class="ui-push-title">將筆記新增至 GitHub</span>
+                    <span class="ui-push-only-title">推送變更至 GitHub</span>
+                    <span class="ui-pull-title">從 GitHub 匯入檔案至筆記</span>
+                </h4>
+            </div>
+            <div class="modal-body">
+                <div class="alert alert-danger" style="display: none;">
+                    <i class="fa fa-times ui-close-alert" aria-hidden="true" style="float: right;"></i>
+                    <span class="ui-github-sync-alert-msg"></span>
+                    &nbsp;
+                    
+                        <a href=https://github.com/login/oauth/authorize?client_id=Iv1.dce7f04830297ce5&amp;redirect_uri=https%3A%2F%2Fhackmd.io%2Fapi%2Fgithub%2Fsync%2Fcallback target="_blank" class="ui-github-sync-authorize-again" style="display: none;">請按此重新授權</a>
+                    
+                </div>
+
+                <div class="github-path-container hmd-flex hmd-items-center form-group">
+                    <i class="fa fa-github"></i>&nbsp;
+                    <span class="github-path" title="" data-toggle="tooltip" data-placement="bottom" data-offset="0,5" data-original-title=""></span>
+                </div>
+
+                <div class="choose-repo-file-section">
+                    <h4 class="github-section-title">選擇要推送的檔案路徑</h4>
+                    <div style="display: flex; margin-bottom: 0px; align-items: center;">
+                        <div style="flex: 1">選擇 Repo
+                            
+                                <i class="fa fa-question-circle fa-12 tooltip-align-left ui-second-menu-tooltip" style="color: #CDCDCD"
+                                title="您可以從您已授權安裝 HackMD App 的 Repo 裡的選擇檔案同步"
+                                data-toggle="tooltip" data-placement="bottom" data-offset="0,5"></i>
+                            
+                        </div>
+                        <div style="flex: 2; max-width: calc(100% * 2 / 3);">
+                            <select id="github-repos" placeholder="選擇 Repo"></select>
+                        </div>
+                    </div>
+
+                    <div style="margin: 5px 0px 30px 0px; text-align: right;">
+                        <a href="#" class="ui-refresh-github-sync-repos" style="margin-right: 10px;">更新<i class="fa fa-rotate-left fa-12" style="margin-left: 3px;"></i></a>
+                        
+                            <a href="https://github.com/apps/hackmd-hub/installations/new" target="_blank">授權更多 Repo<i class="fa fa-angle-right fa-12" style="margin-left: 3px;"></i></a>
+                        
+                    </div>
+
+                    <div style="display: flex; margin-bottom: 30px; align-items: center;">
+                        <div style="flex: 1">選擇 Branch
+                            <i class="fa fa-question-circle fa-12 tooltip-align-left ui-second-menu-tooltip" style="color: #CDCDCD"
+                            title="您每次推送、拉取時都可以選擇要同步的 branch"
+                            data-toggle="tooltip" data-placement="bottom" data-offset="0,5"></i>
+                        </div>
+                        <div style="flex: 2; max-width: calc(100% * 2 / 3);">
+                            <select id="github-branches"></select>
+                        </div>
+                    </div>
+
+                    <div style="display: flex; margin-bottom: 30px; align-items: center;">
+                        <div style="flex: 1">選擇要同步的檔案</div>
+                        <div style="flex: 2; max-width: calc(100% * 2 / 3);">
+                            <select id="github-files"></select>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="choose-branch-section">
+                    <div style="display: flex; margin-bottom: 30px; align-items: center;">
+                        <div style="flex: 1">選擇 Branch
+                            <i class="fa fa-question-circle fa-12 tooltip-align-left ui-second-menu-tooltip" style="color: #CDCDCD"
+                            title="您每次推送、拉取時都可以選擇要同步的 branch"
+                            data-toggle="tooltip" data-placement="bottom" data-offset="0,5"></i>
+                        </div>
+                        <div style="flex: 2; max-width: calc(100% * 2 / 3);">
+                            <select id="github-push-branches" placeholder="選擇或輸入建立 Branch"></select>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="relative flex flex-col ui-push-mode" style="display: none">
+                    <div class="flex">
+                        <div style="flex: 1;" class="pt-2.5">選取推送的版本
+                            <i class="fa fa-question-circle fa-12 tooltip-align-left ui-second-menu-tooltip" style="color: #CDCDCD"
+                                title="HackMD 會將版本名稱及描述合併為提交訊息推送至 GitHub"
+                                data-toggle="tooltip" data-placement="bottom" data-offset="0,5"></i>
+                        </div>
+                        <div style="flex: 2; max-width: calc(100% * 2 / 3); margin-bottom: 35px;" id="version-select-tabs">
+                            <ul class="nav nav-tabs" role="tablist" style="margin-bottom: 20px;">
+                                <li role="presentation" class="ui-create-new-version active">
+                                    <a href="#create-new-version" aria-controls="create-new-version" role="tab" data-toggle="tab" style="height: 100%;">
+                                        <i class="fa fa-check visibility-on-active" aria-hidden="true" style="margin-right:  3px;"></i>建立新版本並推送</a>
+                                </li>
+                                <li role="presentation" class="ui-select-from-existing-version">
+                                    <a href="#select-from-existing-version" aria-controls="select-from-existing-version" role="tab" data-toggle="tab" style="height: 100%;">
+                                        <i class="fa fa-check visibility-on-active" aria-hidden="true" style="margin-right:  3px;"></i>從已有版本選擇</a>
+                                </li>
+                            </ul>
+                            <!-- Tab panes -->
+                            <div class="tab-content">
+                                <div role="tabpanel" class="tab-pane active" id="create-new-version">
+                                    <form role="form" class="form create-version-form">
+    <div class="form-group">
+        <div class="ui-revision-timestamp">
+            <i class="fa fa-clock-o fa-fw"></i>
+            <span></span>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label for="">版本名稱</label>
+        <input type="text" class="form-control" maxlength="80">
+    </div>
+
+    <div class="form-group">
+        <label for="">版本描述</label>
+        <textarea class="form-control" style="width: 100%; height: 76px; resize: vertical;" placeholder="請輸入版本描述（非必填）" maxlength="500"></textarea>
+    </div>
+
+    <input type="text" required name="canPushHiddenField" class="hidden">
+
+    <div class="github-sync-button-container">
+        <button type="button" class="btn btn-default" data-dismiss="modal" style="margin-right: 5px;">取消</button>
+        <button type="submit" class="btn btn-primary ui-github-sync-button">推送</button>
+    </div>
+</form>
+
+                                </div>
+
+                                <div role="tabpanel" class="tab-pane" id="select-from-existing-version">
+                                    <div class="version-list hmd-flex hmd-flex-column">
+                                    </div>
+
+                                    <div class="github-sync-button-container">
+                                        <button type="button" class="btn btn-default" data-dismiss="modal" style="margin-right: 5px;">取消</button>
+                                        <button type="button" class="btn btn-primary ui-github-sync-button" disabled>推送</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="flex items-start mb-11 github-available-quota-section" style="display: none;">
+                        <div style="flex: 1">
+                            可推送次數
+                        </div>
+
+                        <div style="flex: 2; word-break: break-all">
+                            <div class="ui-github-synced-push-count mb-2.5"></div>
+                            <div class="text-gray-600" style="font-size: 12px;">
+                                <span class="github-synced-push-info"></span>
+                                <br>
+                                <a target="_blank" href="/?nav=billing" class="github-push-quota-upgrade-now">
+                                    立即升級
+                                    <i class="fa fa-fw fa-angle-right" aria-hidden="true"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="ui-pull-mode" style="text-align: right">
+                    <button type="button" class="btn btn-default" data-dismiss="modal" style="margin-right: 5px;">取消</button>
+                    <button type="button" class="btn btn-primary ui-github-sync-button" disabled>匯入</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- github sync pull modal -->
+<div class="modal fade" id="githubSyncPullModal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" style="width: calc(100vw - 20px); max-width: 1200px; height: calc(100vh - 100px);">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span>
+                </button>
+                </button>
+                <h4 class="modal-title" id="mySmallModalLabel">從 GitHub 拉取變更</h4>
+            </div>
+            <div class="container-fluid modal-body hmd-pa-0 hmd-flex hmd-flex-column" style="max-height: calc(100vh - 100px); height: calc(100vh - 100px); overflow: hidden;">
+                <div class="github-sync-pull-error hmd-flex hmd-flex-column hmd-items-center hmd-justify-center" style="display: none;">
+                    <h3></h3>
+                </div>
+
+                <div class="github-path-container hmd-flex hmd-items-center">
+                    <i class="fa fa-github"></i>&nbsp;
+                    <span class="github-path" title="" data-toggle="tooltip" data-placement="bottom" data-offset="0,5" data-original-title=""></span>
+                </div>
+
+                <div class="github-pull-form">
+                    <form class="form" id="github-sync-pull-form">
+                        <div class="form-group hmd-flex hmd-justify-between hmd-items-center">
+                            <label class="hmd-flex-shrink-0 hmd-mr-1">拉取自 Branch</label>
+
+                            <select id="github-pull-branches" placeholder="選擇 Branch"></select>
+
+                            <div class="pull-actions hmd-flex-shrink-0 hmd-ml-1">
+                                <button type="button" data-dismiss="modal" class="btn btn-default" style="margin-right: 10px;">取消</button>
+
+                                <button type="submit" class="btn btn-primary">
+                                    套用全部變更
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="pull-view-indicator hmd-flex">
+                            <div class="hmd-flex-one github">
+                                <small>來自 GitHub 的檔案</small>
+                            </div>
+                            <div class="hmd-flex-one source">
+                                <small>來自 HackMD 的檔案</small>
+                            </div>
+                        </div>
+                    </form>
+
+                </div>
+                <div class="pull-editor-container hmd-flex hmd-flex-column">
+                    <div id="github-sync-pull-editor" class="hmd-flex-one"></div>
+                    <div class="ui-spinner unselectable hidden-print"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- github synced settings modal -->
+<div class="modal fade github-synced-settings-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title" id="myModalLabel">同步設定</h4>
+            </div>
+
+            <div class="modal-body" style="color:black;">
+                <h4 style="border-bottom: 2px solid #cccccc; padding-bottom: 15px; margin: 5px 0px 30px 0px">與此筆記同步的檔案</h4>
+
+                <div style="display: flex; margin-bottom: 30px; align-items: center;">
+                    <div style="flex: 1">建立同步的使用者</div>
+                    <div style="flex: 2; text-overflow: ellipsis; overflow: hidden; white-space: nowrap;" class="ui-github-synced-user">
+                        <a target="_blank" class="ui-github-synced-user-photo"><img class="ui-avatar" width="30" height="30" style="border-radius: 100%; margin-right: 10px;"  src=""></a>
+                        <a target="_blank" class="ui-github-synced-user-name"></a>
+                    </div>
+                </div>
+
+                <div style="display: flex; margin-bottom: 30px; align-items: center;">
+                    <div style="flex: 1">同步的檔案路徑</div>
+                    <div style="flex: 2; word-break: break-all" class="ui-github-synced-filepath" style="word-break: break-all;"></div>
+                </div>
+
+                <div style="display: flex; margin-bottom: 30px; align-items: center;">
+                    <div style="flex: 1">最近使用的 Branch
+                        <i class="fa fa-question-circle fa-12 tooltip-align-left ui-second-menu-tooltip" style="color: #CDCDCD"
+                        title="您可以在推送、拉取時選擇其它的分支"
+                        data-toggle="tooltip" data-placement="bottom" data-offset="0,5"></i>
+                    </div>
+                    <div style="flex: 2; word-break: break-all" class="ui-github-synced-recent-branch"></div>
+                </div>
+
+                <div class="flex mb-7.5 items-start github-available-quota-section" style="display: none;">
+                    <div style="flex: 1">
+                        可推送次數
+                    </div>
+
+                    <div style="flex: 2; word-break: break-all">
+                        <div class="ui-github-synced-push-count mb-2.5"></div>
+                        <div class="text-gray-600" style="font-size: 12px;">
+                            <span class="github-synced-push-info"></span>
+                            <br>
+                            <a target="_blank" href="/?nav=billing" class="github-setting-quota-upgrade-now">
+                                立即升級
+                                <i class="fa fa-fw fa-angle-right" aria-hidden="true"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+
+                <h4 style="border-bottom: 2px solid #cccccc; padding-bottom: 15px; margin: 5px 0px 30px 0px">危險區域</h4>
+
+                <div style="display: flex; margin-bottom: 5px;">
+                    <div style="flex: 1; margin-top: 7px;">取消同步</div>
+                    <div style="flex: 2">
+                        <button type="button" class="btn btn-danger btn-outline ui-github-cancel-sync-button">取消同步</button>
+                        <div style="margin-top: 15px; font-size: 12px; color: #888;">一旦移除與 GitHub 指定檔案的同步，未來將不會有變更通知。</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- loading modal -->
+<div class="modal fade loading-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+            <div class="modal-body">
+                <div>
+                    <div class="ui-loading" style="height: 139px; width: 139px; position: relative; margin: 0 auto; top: 10px;"></div>
+                    <p class="ui-loading-msg" style="text-align: center; margin-bottom: 35px; position: relative; top: 15px;">同步中請稍後</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- push failed modal -->
+<div class="modal fade push-failed-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg" style="max-width: 400px; margin: auto;">
+      <div class="modal-content">
+          <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span>
+              </button>
+              <h4 class="modal-title" id="myModalLabel">推送變更失敗</h4>
+          </div>
+          <div class="modal-body" style="text-align: center;">
+              <img src="https://hackmd.io/push-xx.svg" width="85px" height="96px" style="margin-top: 5px;">
+              <div style="font-size: 16px; text-align: left; margin-top: 20px; word-break: break-all;"></div>
+          </div>
+          <div class="modal-footer" style="border: none; padding-top: 5px;">
+              <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+              <button type="button" class="btn btn-primary" data-dismiss="modal">重新推送</button>
+          </div>
+      </div>
+  </div>
+</div>
+<!-- push success modal -->
+<div class="modal fade push-success-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg" style="max-width: 400px; margin: auto;">
+      <div class="modal-content">
+          <div class="modal-body" style="text-align: center; margin: 35px 0px;">
+                <img src="https://hackmd.io/push-done.svg" width="85px" height="94.7px">
+                <div style="font-size: 18px; margin-top: 20px;">
+                    推送成功
+                </div>
+          </div>
+      </div>
+  </div>
+</div>
+
+<div class="publish-limiter"></div>
+
+    
+    
+    <script src="https://www.googletagmanager.com/gtag/js?id=UA-60728495-1"></script>
+    <script nonce="c75a2a09-933c-44fd-80aa-bbd70ee1a07b">
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        let userid = (document.cookie.match('(^|; )userid=([^;]*)')||0)[2];
+        gtag('config', 'UA-60728495-1', {'user_id': userid});
+        
+    </script>
+
+
+
+<script src="https://browser.sentry-cdn.com/5.15.5/bundle.min.js" crossorigin="anonymous"></script>
+<script nonce="c75a2a09-933c-44fd-80aa-bbd70ee1a07b">Sentry.init({ dsn: 'https://73410f1915d84abc8b2dd1f1aabd1c82@sentry.hackmd.dev/4', environment: 'production', integrations: function (intrus) { return intrus.filter(function (itr) { return itr.name !== 'TryCatch' }) } });</script>
+
+
+
+<!-- Google Tag Manager (noscript) -->
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-KLW9Z3"
+height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<!-- End Google Tag Manager (noscript) -->
+
+
+<script src="https://hackmd.io/api/i18n.js"></script>
+ <script src="https://assets.hackmd.io/build/font-vendor.1b4c8aac415c85d7f33b.js" defer="defer"></script><script src="https://assets.hackmd.io/build/common-vendor.9ad4eb1bd27d1eb68036.js" defer="defer"></script><script src="https://assets.hackmd.io/build/index-vendor.a885ce2abbc6c2eb626e.js" defer="defer"></script><script src="https://assets.hackmd.io/build/index-common.d0db84a8d4eae7065a91.js" defer="defer"></script><script src="https://assets.hackmd.io/build/index.ee6b8257ef3fc871b4d1.js" defer="defer"></script>
+
+
+
+</body>
+
+</html>
